@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
+import { Link } from "react-router-dom";
 
 function Home({ isAuth }) {
   const [postLists, setPostList] = useState([]);
@@ -13,7 +14,7 @@ function Home({ isAuth }) {
     };
 
     getPosts();
-  }, [deletePost]);
+  }, []);
 
   const deletePost = async (id) => {
     const postDoc = doc(db, "posts", id);
@@ -21,13 +22,14 @@ function Home({ isAuth }) {
   };
   return (
     <div className="homePage">
+      {console.log(postLists)}
       {postLists.map((post) => {
         return (
-          <div className="post">
+          <div key={post.id} className="post">
             <div className="postHeader">
-              <div className="title">
+              <Link to={`/${post.id}`} className="title">
                 <h1> {post.title}</h1>
-              </div>
+              </Link>
               <div className="deletePost">
                 {isAuth && post.author.id === auth.currentUser.uid && (
                   <button

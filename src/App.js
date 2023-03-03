@@ -7,6 +7,7 @@ import SinglePost from "./pages/SinglePost";
 import { useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
+import NavBar from "./components/NavBar";
 
 function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
@@ -21,23 +22,11 @@ function App() {
 
   return (
     <Router>
-      <nav>
-        <Link to="/"> Home </Link>
-
-        {!isAuth ? (
-          <Link to="/login"> Login </Link>
-        ) : (
-          <>
-            <Link to="/createpost"> Create Post </Link>
-            <button className="logout" onClick={signUserOut}> Log Out</button>
-          </>
-        )}
-      </nav>
+      <NavBar isAuth={isAuth} signUserOut={signUserOut} />
       <Routes>
         <Route path="/" element={<Home isAuth={isAuth} />} />
         <Route path="/createpost" element={<CreatePost isAuth={isAuth} />} />
         <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
-        <Route path="/singlepost" element={<SinglePost setIsAuth={setIsAuth} />} />
         <Route path="/:id" element={<SinglePost />} />
       </Routes>
     </Router>

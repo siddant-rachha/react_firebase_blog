@@ -19,14 +19,16 @@ function CreatePost({ isAuth }) {
     navigate("/");
   };
 
-  useEffect(() => {
-    if (!isAuth) {
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!isAuth) {
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   return (
-    <div className="createPostPage">
+    <>
+    {!isAuth ? <h1 style={{textAlign:"center"}}>Login to Create a Post</h1>:
+    (<div className="createPostPage">
       <div className="cpContainer">
         <h1>Create A Post</h1>
         <div className="inputGp">
@@ -49,7 +51,8 @@ function CreatePost({ isAuth }) {
         </div>
         <button onClick={createPost}> Submit Post</button>
       </div>
-    </div>
+    </div>)}
+    </>
   );
 }
 

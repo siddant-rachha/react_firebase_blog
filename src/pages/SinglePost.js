@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 function SinglePost() {
-    let { id } = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const postId = searchParams.get("singlepost");
 
 
     useEffect(() => {
         const getSinglePost = async () => {
-            const docRef = doc(db, "posts", id);
+            const docRef = doc(db, "posts", postId);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 console.log("Document data:", docSnap.data());
@@ -19,8 +20,6 @@ function SinglePost() {
             }
         };
         getSinglePost();
-        console.log(id)
-
     }, []);
 
     return (

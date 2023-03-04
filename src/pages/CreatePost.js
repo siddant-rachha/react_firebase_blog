@@ -3,7 +3,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 
-function CreatePost({ isAuth, setModalShow, setModalText }) {
+function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");
 
@@ -19,6 +19,7 @@ function CreatePost({ isAuth, setModalShow, setModalText }) {
     navigate("/");
     setModalShow(true);
     setModalText("Post Created")
+    setModalConfirmFn(() => () => { });
   };
 
   return (

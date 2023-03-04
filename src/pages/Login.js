@@ -3,7 +3,7 @@ import { auth, provider } from "../firebase-config";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-function Login({ setIsAuth, setModalShow, setModalText }) {
+function Login({ setIsAuth, setModalShow, setModalText, setModalConfirmFn }) {
   let navigate = useNavigate();
 
   const signInWithGoogle = () => {
@@ -13,6 +13,8 @@ function Login({ setIsAuth, setModalShow, setModalText }) {
       navigate("/");
       setModalShow(true);
       setModalText("Login Successful")
+      setModalConfirmFn(() => () => { });
+
     });
   };
 

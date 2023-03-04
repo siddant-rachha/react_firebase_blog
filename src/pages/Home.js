@@ -3,7 +3,17 @@ import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import { Link } from "react-router-dom";
 
-function Home({ isAuth,setModalConfirmFn, setModalText, setModalShow }) {
+
+import { Stack, Container, Button } from "react-bootstrap";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+
+function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
   const [postLists, setPostList] = useState([]);
   const postsCollectionRef = collection(db, "posts");
 
@@ -44,34 +54,69 @@ function Home({ isAuth,setModalConfirmFn, setModalText, setModalShow }) {
   }
 
   return (
-    <div className="homePage">
-      {postLists.map((post) => {
-        return (
-          <div key={post.id} className="post">
-            <div className="postHeader">
-              <Link to={`/posts?singlepost=${post.id}`} className="title">
-                <h1> {post.title}</h1>
-              </Link>
-              <div className="deletePost">
-                {isAuth && post.author.id === auth.currentUser.uid && (
-                  <button
-                    onClick={() => {
-                      deletePostClick(post.id);
-                    }}
-                  >
-                    {" "}
-                    &#128465;
-                  </button>
-                )}
-              </div>
-            </div>
-            <div className="postTextContainer"> {post.postText} </div>
-            <h3>@{post.author.name}</h3>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <Container>
+        <div className="mt-3"></div>
+        <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+          {postLists.map((post) => (
+            <Col key={post.id}>
+              <Card bg='light'>
+                <Card.Header className="h5">
+                  { post.title.length>100 ? `${post.title.slice(0,75)}...`:`${post.title}`}
+                </Card.Header>
+                <Card.Body>
+                  <Card.Subtitle className="mb-2 text-muted">@{post.author.name}</Card.Subtitle>
+                  <Card.Text>
+                    {`${post.postText.slice(0,100)}...`}
+                  </Card.Text>
+                </Card.Body>
+                <Card.Body>
+                  <Stack direction="horizontal">
+                    <Link to={`/posts?singlepost=${post.id}`}>
+                      Read More
+                    </Link>
+                    {isAuth && post.author.id === auth.currentUser.uid && (
+                      <Button onClick={() => deletePostClick(post.id)} variant="outline-danger" className="ms-auto"><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>
+                    )}
+                  </Stack>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+        <div className="mt-5"></div>
+      </Container>
+    </>
   );
 }
 
 export default Home;
+
+
+
+
+
+
+// function GridExample() {
+//   return (
+//     <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+//       {Array.from({ length: 4 }).map((_, idx) => (
+//         <Col>
+//           <Card>
+//             <Card.Img variant="top" src="holder.js/100px160" />
+//             <Card.Body>
+//               <Card.Title>Card title</Card.Title>
+//               <Card.Text>
+//                 This is a longer card with supporting text below as a natural
+//                 lead-in to additional content. This content is a little bit
+//                 longer.
+//               </Card.Text>
+//             </Card.Body>
+//           </Card>
+//         </Col>
+//       ))}
+//     </Row>
+//   );
+// }
+
+// export default GridExample;

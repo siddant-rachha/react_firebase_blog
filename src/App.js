@@ -38,16 +38,33 @@ function App() {
   return (
     <>
       {console.log('APP.JS RENDERED')}
-      <Model show={modalShow} hideModal={hideModal} 
-      modalConfirmPress={modalConfirmPress}
-       modalText={modalText} />
-      <NavBar setIsAuth={setIsAuth} isAuth={isAuth} 
-      setModalConfirmFn={setModalConfirmFn} setModalText={setModalText} setModalShow={setModalShow} />
+      <Model
+        show={modalShow}
+        hideModal={hideModal}
+        modalConfirmPress={modalConfirmPress}
+        modalText={modalText} />
+      <NavBar
+        setIsAuth={setIsAuth}
+        isAuth={isAuth}
+        setModalConfirmFn={setModalConfirmFn}
+        setModalText={setModalText}
+        setModalShow={setModalShow} />
       <Routes>
-        <Route path="/" element={<Home isAuth={isAuth}
-        setModalConfirmFn={setModalConfirmFn} setModalText={setModalText} setModalShow={setModalShow} />} />
-        <Route path="/createpost" element={<CreatePost isAuth={isAuth} setModalShow={setModalShow} setModalText={setModalText} />} />
-        <Route path="/login" element={<Login setIsAuth={setIsAuth} setModalText={setModalText} setModalShow={setModalShow} />} />
+        <Route path="/" element={<Home
+          isAuth={isAuth}
+          setModalConfirmFn={setModalConfirmFn}
+          setModalText={setModalText}
+          setModalShow={setModalShow} />} />
+        <Route path="/createpost" element={<CreatePost
+          setModalConfirmFn={setModalConfirmFn}
+          isAuth={isAuth}
+          setModalShow={setModalShow}
+          setModalText={setModalText} />} />
+        <Route path="/login" element={<Login
+          setModalConfirmFn={setModalConfirmFn}
+          setIsAuth={setIsAuth}
+          setModalText={setModalText}
+          setModalShow={setModalShow} />} />
         <Route path="/:id" element={<SinglePost />} />
       </Routes>
     </>

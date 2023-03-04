@@ -3,7 +3,7 @@ import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import { Link } from "react-router-dom";
 
-function Home({ isAuth }) {
+function Home({ isAuth,setModalConfirmFn, setModalText, setModalShow }) {
   const [postLists, setPostList] = useState([]);
   const postsCollectionRef = collection(db, "posts");
 
@@ -22,6 +22,15 @@ function Home({ isAuth }) {
     getPosts();
   }, []);
 
+  const deletePostClick = (id) => {
+
+    setModalText("Do you want to delete?")
+    setModalShow(true)
+    setModalConfirmFn(() => () =>
+      deletePost(id)
+    )
+  };
+
   const deletePost = async (id) => {
     try {
       const postDoc = doc(db, "posts", id);
@@ -32,7 +41,8 @@ function Home({ isAuth }) {
     } catch (error) {
       alert(error);
     }
-  };
+  }
+
   return (
     <div className="homePage">
       {postLists.map((post) => {
@@ -44,14 +54,14 @@ function Home({ isAuth }) {
               </Link>
               <div className="deletePost">
                 {isAuth && post.author.id === auth.currentUser.uid && (
-                <button
-                  onClick={() => {
-                    deletePost(post.id);
-                  }}
-                >
-                  {" "}
-                  &#128465;
-                </button>
+                  <button
+                    onClick={() => {
+                      deletePostClick(post.id);
+                    }}
+                  >
+                    {" "}
+                    &#128465;
+                  </button>
                 )}
               </div>
             </div>

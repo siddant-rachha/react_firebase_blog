@@ -1,35 +1,56 @@
+// css imports
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
+// components imports
+import Model from './components/Model';
+import NavBar from "./components/NavBar";
+
+//pages imports
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
 import Login from "./pages/Login";
 import SinglePost from "./pages/SinglePost";
+
+//packages imports
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "./firebase-config";
-import NavBar from "./components/NavBar";
+
 
 function App() {
-  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
+  const navigate = useNavigate();
 
-  const signUserOut = () => {
-    signOut(auth).then(() => {
-      localStorage.clear();
-      setIsAuth(false);
-      window.location.pathname = "/login";
-    });
-  };
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
+  const [modalShow, setModalShow] = useState(false);
+  const [modalConfirmFn, setModalConfirmFn] = useState();
+  const [modalText, setModalText] = useState("");
+
+  const hideModal = () => setModalShow(false)
+
+  const modalConfirmPress = () => {
+    modalConfirmFn();
+    setModalShow(false);
+    setModalConfirmFn(() => () => { });
+  }
+
+
 
   return (
-    <Router>
-      <NavBar isAuth={isAuth} signUserOut={signUserOut} />
+    <>
+      {console.log('APP.JS RENDERED')}
+      <Model show={modalShow} hideModal={hideModal} 
+      modalConfirmPress={modalConfirmPress}
+       modalText={modalText} />
+      <NavBar setIsAuth={setIsAuth} isAuth={isAuth} 
+      setModalConfirmFn={setModalConfirmFn} setModalText={setModalText} setModalShow={setModalShow} />
       <Routes>
-        <Route path="/" element={<Home isAuth={isAuth} />} />
-        <Route path="/createpost" element={<CreatePost isAuth={isAuth} />} />
-        <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
+        <Route path="/" element={<Home isAuth={isAuth}
+        setModalConfirmFn={setModalConfirmFn} setModalText={setModalText} setModalShow={setModalShow} />} />
+        <Route path="/createpost" element={<CreatePost isAuth={isAuth} setModalShow={setModalShow} setModalText={setModalText} />} />
+        <Route path="/login" element={<Login setIsAuth={setIsAuth} setModalText={setModalText} setModalShow={setModalShow} />} />
         <Route path="/:id" element={<SinglePost />} />
       </Routes>
-    </Router>
+    </>
   );
 }
 

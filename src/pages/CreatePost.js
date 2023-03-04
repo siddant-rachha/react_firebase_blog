@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
+import { Form, Button, Container } from "react-bootstrap";
 
-function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
+function CreatePost({ setModalShow, setModalText, setModalConfirmFn }) {
+
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");
 
-  const postsCollectionRef = collection(db, "posts");
   let navigate = useNavigate();
+  const postsCollectionRef = collection(db, "posts");
 
-  const createPost = async () => {
+  const createPost = async (e) => {
+    if(title.trim() == "" || postText.trim() == ""){alert("title or post, empty");return;}
+    e.preventDefault();
     await addDoc(postsCollectionRef, {
       title,
       postText,
@@ -24,31 +28,25 @@ function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
 
   return (
     <>
-      {!isAuth ? <h1 style={{ textAlign: "center" }}>Login to Create a Post</h1> :
-        (<div className="createPostPage">
-          <div className="cpContainer">
-            <h1>Create A Post</h1>
-            <div className="inputGp">
-              <label> Title:</label>
-              <input
-                placeholder="Title..."
-                onChange={(event) => {
-                  setTitle(event.target.value);
-                }}
-              />
-            </div>
-            <div className="inputGp">
-              <label> Post:</label>
-              <textarea
-                placeholder="Post..."
-                onChange={(event) => {
-                  setPostText(event.target.value);
-                }}
-              />
-            </div>
-            <button onClick={createPost}> Submit Post</button>
-          </div>
-        </div>)}
+      <Container>
+        <Form className="mt-5">
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Title</Form.Label>
+            <Form.Control onChange={(event) =>setTitle(event.target.value)} type="text" placeholder="Enter title" />
+            {/* <Form.Text className="text-muted">
+              Write short title
+            </Form.Text> */}
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Post Text</Form.Label>
+            <Form.Control style={{ height: "40vh" }} onChange={(event) => setPostText(event.target.value)} as="textarea" placeholder="Write post here..." />
+          </Form.Group>
+          <Button onClick={(e)=>createPost(e)} variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </Container>    
     </>
   );
 }

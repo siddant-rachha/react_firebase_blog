@@ -2,7 +2,9 @@ import React from "react";
 import { auth, provider } from "../firebase-config";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-
+import { Container, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from '@fortawesome/free-brands-svg-icons' 
 function Login({ setIsAuth, setModalShow, setModalText, setModalConfirmFn }) {
   let navigate = useNavigate();
 
@@ -19,12 +21,11 @@ function Login({ setIsAuth, setModalShow, setModalText, setModalConfirmFn }) {
   };
 
   return (
-    <div className="loginPage">
-      <p>Sign In With Google to Continue</p>
-      <button className="login-with-google-btn" onClick={signInWithGoogle}>
-        Sign in with Google
-      </button>
-    </div>
+    <Container style={{height:"50vh"}} className="d-flex flex-column align-items-center justify-content-center">
+        <p className="">Sign In With Google to Continue</p>
+        <Button onClick={signInWithGoogle}><FontAwesomeIcon className="me-3" icon={faGoogle} />Sign in Google</Button>
+    </Container>
+
   );
 }
 

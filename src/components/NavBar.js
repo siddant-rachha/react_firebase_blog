@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, provider } from "../firebase-config";
 import { signOut } from "firebase/auth";
 
+import { Container, Button } from 'react-bootstrap';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+
 
 
 function NavBar({ isAuth, setModalText, setModalShow, setModalConfirmFn, setIsAuth }) {
@@ -26,16 +30,30 @@ function NavBar({ isAuth, setModalText, setModalShow, setModalConfirmFn, setIsAu
     };
 
     return (
-        <nav>
-
-            <Link to="/"> Home </Link>
-            <Link to="/createpost"> Create Post </Link>
-
-            {!isAuth ?
-                <button className='logout' onClick={login}> Login </button> :
-                <button className="logout" onClick={logoutClicked}> Log Out</button>
-            }
-        </nav>
+        <>
+            <Navbar bg="dark" variant="dark">
+                <Container className='flex-wrap'>
+                    <Navbar.Brand as={Link} to="/">
+                        <img
+                            src="https://icon-library.com/images/icon-blogger/icon-blogger-2.jpg"
+                            width="30"
+                            height="30"
+                            className="d-inline-block align-top"
+                            alt="React Bootstrap logo"
+                        />
+                    </Navbar.Brand>
+                    <Nav className="me-auto flex-wrap justify-content-start">
+                        <Nav.Link as={Link} to='/createpost'>Create</Nav.Link>
+                        <Nav.Link as={Link} to='/mypost'>MyPost</Nav.Link>
+                    </Nav>
+                    <Nav className="ms-auto flex-wrap justify-content-end flex-column">
+                        {!isAuth ? <Button onClick={login} variant="outline-light btn-sm">Login</Button> :
+                            <><Button onClick={logoutClicked} variant="outline-danger btn-sm">Logout</Button></>}
+                    </Nav>
+                    {isAuth && <p style={{ fontSize: "x-small" }} className='position-absolute start-0 bottom-0 mb-0 text-light text-muted'>@ Siddant Rachha</p>}
+                </Container>
+            </Navbar>
+        </>
     )
 }
 

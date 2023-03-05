@@ -29,7 +29,7 @@ function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
     <>
     {console.log(isAuth)}
       <Container className="mt-5">
-        {!isAuth && <h1 className="h2 mb-3">Login to create post</h1>}
+        {!isAuth && <h1 className="h3 mb-3">Login to create post</h1>}
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Title</Form.Label>
@@ -47,6 +47,7 @@ function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
               Submit
             </Button>
           </Form>
+          <div className="mb-3"></div>
       </Container>
     </>
   );

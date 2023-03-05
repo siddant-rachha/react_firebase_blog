@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { doc, getDoc, deleteDoc } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
-import {  useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 import { Stack, Container, Button, Spinner } from "react-bootstrap";
@@ -9,7 +9,7 @@ import { Stack, Container, Button, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
-function SinglePost({ setModalConfirmFn, setModalText, setModalShow }) {
+function SinglePost({ setModalConfirmFn, setModalText, setModalShow, isAuth }) {
 
     const [post, setPost] = useState(null);
 
@@ -50,8 +50,7 @@ function SinglePost({ setModalConfirmFn, setModalText, setModalShow }) {
             await deleteDoc(postDoc);
             setModalText("Post deleted")
             setModalShow(true)
-            setModalConfirmFn(() => () =>
-                {}
+            setModalConfirmFn(() => () => { }
             )
             navigate("/");
 
@@ -75,7 +74,8 @@ function SinglePost({ setModalConfirmFn, setModalText, setModalShow }) {
                     <>
                         <Stack direction="horizontal">
                             <Button onClick={() => navigate(-1)} variant="outline-dark btn-sm" className="me-auto"><FontAwesomeIcon size="xs" icon={faArrowLeft} /></Button>
-                            <Button onClick={() => deletePostClick(postId)} variant="outline-danger btn-sm" className="ms-auto"><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>
+                            {isAuth && post.author.id === localStorage.authuid && (
+                                <Button onClick={() => deletePostClick(postId)} variant="outline-danger btn-sm" className="ms-auto"><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>)}
                         </Stack>
                         <hr></hr>
                         <Stack gap={3} className="mt-1">

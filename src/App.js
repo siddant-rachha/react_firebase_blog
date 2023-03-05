@@ -75,6 +75,7 @@ function App() {
           setModalConfirmFn={setModalConfirmFn}
           setModalText={setModalText}
           setModalShow={setModalShow}
+          isAuth={isAuth}
         />} />
         <Route path="*" element={<h1>404 page not found</h1>} />
       </Routes>

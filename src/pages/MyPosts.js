@@ -67,7 +67,7 @@ function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
                     </>}
 
                 {postLists != null && postLists?.length > 0 &&
-                    <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+                    <Row xs={1} md={2} lg={3} className="g-4">
                         {postLists.map((post) => (
                             <Col key={post.id}>
                                 <Card bg='light'>

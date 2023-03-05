@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
-import { useSearchParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 
-import { Stack, Container, Button } from "react-bootstrap";
+
+import { Stack, Container, Button, Spinner } from "react-bootstrap";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
-function SinglePost() {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const postId = searchParams.get("singlepost");
+function SinglePost({ setModalConfirmFn, setModalText, setModalShow }) {
 
     const [post, setPost] = useState(null);
+
+    const { postId } = useParams();
+
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -31,24 +34,52 @@ function SinglePost() {
         getSinglePost();
     }, []);
 
+    const deletePostClick = (id) => {
+
+        setModalText("Do you want to delete?")
+        setModalShow(true)
+        setModalConfirmFn(() => () =>
+            deletePost(id)
+        )
+    };
+
+    const deletePost = async (id) => {
+        try {
+            const postDoc = doc(db, "posts", id);
+            console.log(postDoc)
+            await deleteDoc(postDoc);
+            setModalText("Post deleted")
+            setModalShow(true)
+            setModalConfirmFn(() => () =>
+                {}
+            )
+            navigate("/");
+
+
+        } catch (error) {
+            alert(error);
+        }
+    }
+
     return (
         <>
             <Container>
                 <div className="mt-3"></div>
-                {post == null && <h1>Loading...</h1>}
+                {post == null &&
+                    <Spinner className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }} animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                }
                 {console.log(post)}
-                {post?.length != 0 && post!=null &&
+                {post?.length != 0 && post != null &&
                     <>
                         <Stack direction="horizontal">
-                            <Button className="me-auto"><FontAwesomeIcon  icon={faArrowLeft} /></Button>
-                            <Button className="ms-auto"><FontAwesomeIcon  icon={faTrashCan} /></Button>
+                            <Button onClick={() => navigate(-1)} variant="outline-dark btn-sm" className="me-auto"><FontAwesomeIcon size="xs" icon={faArrowLeft} /></Button>
+                            <Button onClick={() => deletePostClick(postId)} variant="outline-danger btn-sm" className="ms-auto"><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>
                         </Stack>
+                        <hr></hr>
                         <Stack gap={3} className="mt-1">
-                            <strong><em><div className="text-primary h2 text-center">
-                                {post.title}
-                            </div></em>
-                            </strong>
-                            <hr/>
+                            <p className="h3 mt-3 fw-bold text-decoration-underline">{post.title}</p>
                             <div>
                                 {post.postText}
                             </div>
@@ -58,8 +89,8 @@ function SinglePost() {
                             </div>
                         </Stack>
                     </>}
-                    {post?.length == 0 && <h1 className="h1">No Such Post</h1>}
-                    
+                {post?.length == 0 && <h1 className="h1">No Such Post</h1>}
+                <div className="mt-5"></div>
             </Container>
         </>
     );

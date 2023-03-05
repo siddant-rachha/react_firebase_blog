@@ -82,7 +82,7 @@ function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
                                     </Card.Body>
                                     <Card.Body>
                                         <Stack direction="horizontal">
-                                            <Link to={`/posts?singlepost=${post.id}`}>
+                                            <Link to={`/posts/${post.id}`}>
                                                 Read More
                                             </Link>
                                             {console.log(isAuth)} 
@@ -99,7 +99,7 @@ function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
                     </Row>
                 }
                 {localStorage.authuid==null && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>Login to see your posts</h3>}
-                {postLists?.length == 0 && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>No Posts available</h3>}
+                {postLists?.length == 0 && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>You have no posts. Create one.</h3>}
 
             </Container>
             <div className="mt-5"></div>

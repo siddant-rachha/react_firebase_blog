@@ -71,7 +71,12 @@ function App() {
           setModalConfirmFn={setModalConfirmFn}
           setModalText={setModalText}
           setModalShow={setModalShow} />} />
-        <Route path="/:id" element={<SinglePost />} />
+        <Route path="/posts/:postId" element={<SinglePost
+          setModalConfirmFn={setModalConfirmFn}
+          setModalText={setModalText}
+          setModalShow={setModalShow}
+        />} />
+        <Route path="*" element={<h1>404 page not found</h1>} />
       </Routes>
     </>
   );

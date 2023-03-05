@@ -43,8 +43,8 @@ function NavBar({ isAuth, setModalText, setModalShow, setModalConfirmFn, setIsAu
                         />
                     </Navbar.Brand>
                     <Nav className="me-auto flex-wrap justify-content-start d-flex align-items-center">
-                        <NavLink className="p-sm-2 p-1" to='/createpost'>Create</NavLink>
-                        <NavLink className="p-sm-2 p-1" to='/mypost'>MyPost</NavLink>
+                        <NavLink className="ps-sm-3 pe-sm-3 pe-2 ps-2" to='/createpost'>Create</NavLink>
+                        <NavLink className="ps-sm-3 pe-sm-3 pe-2 ps-2" to='/mypost'>MyPost</NavLink>
                     </Nav>
                     <Nav className="ms-auto flex-wrap justify-content-end flex-column">
                         {!isAuth ? <Button onClick={login} variant="outline-light btn-sm">Login</Button> :

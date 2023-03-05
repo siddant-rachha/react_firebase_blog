@@ -71,7 +71,7 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
       <Container>
         {postLists == null ?
           <>
-            <Spinner style={{ position: "absolute", top: "40%", left: "50%" }} animation="border" role="status">
+            <Spinner className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }} animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
             </Spinner>
           </> :

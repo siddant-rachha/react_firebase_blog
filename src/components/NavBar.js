@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import { auth, provider } from "../firebase-config";
 import { signOut } from "firebase/auth";
 
@@ -42,15 +42,15 @@ function NavBar({ isAuth, setModalText, setModalShow, setModalConfirmFn, setIsAu
                             alt="React Bootstrap logo"
                         />
                     </Navbar.Brand>
-                    <Nav className="me-auto flex-wrap justify-content-start">
-                        <Nav.Link as={Link} to='/createpost'>Create</Nav.Link>
-                        <Nav.Link as={Link} to='/mypost'>MyPost</Nav.Link>
+                    <Nav className="me-auto flex-wrap justify-content-start d-flex align-items-center">
+                        <NavLink className="p-sm-2 p-1" to='/createpost'>Create</NavLink>
+                        <NavLink className="p-sm-2 p-1" to='/mypost'>MyPost</NavLink>
                     </Nav>
                     <Nav className="ms-auto flex-wrap justify-content-end flex-column">
                         {!isAuth ? <Button onClick={login} variant="outline-light btn-sm">Login</Button> :
                             <><Button onClick={logoutClicked} variant="outline-danger btn-sm">Logout</Button></>}
                     </Nav>
-                    {isAuth && <p style={{ fontSize: "x-small" }} className='position-absolute start-0 bottom-0 mb-0 text-light text-muted'>@ Siddant Rachha</p>}
+                    {isAuth && <p style={{ fontSize: "x-small" }} className='position-absolute start-0 bottom-0 mb-0 text-light text-muted'>@ {localStorage?.name}</p>}
                 </Container>
             </Navbar>
         </>

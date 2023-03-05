@@ -80,7 +80,7 @@ function SinglePost({ setModalConfirmFn, setModalText, setModalShow, isAuth }) {
                         <hr></hr>
                         <Stack gap={3} className="mt-1">
                             <p className="h3 mt-3 fw-bold text-decoration-underline">{post.title}</p>
-                            <div>
+                            <div style={{whiteSpace: "pre-wrap"}}>
                                 {post.postText}
                             </div>
                             <hr />

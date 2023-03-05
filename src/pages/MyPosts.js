@@ -45,7 +45,6 @@ function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
     const deletePost = async (id) => {
         try {
             const postDoc = doc(db, "posts", id);
-            console.log(postDoc)
             await deleteDoc(postDoc);
             getPosts();
 
@@ -85,9 +84,6 @@ function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
                                             <Link to={`/posts/${post.id}`}>
                                                 Read More
                                             </Link>
-                                            {console.log(isAuth)} 
-                                            {console.log(post.author.id)} 
-                                            {console.log(localStorage.authuid)}
                                             {isAuth && post.author.id === localStorage.authuid && (
                                                 <Button onClick={() => deletePostClick(post.id)} variant="outline-danger" className="ms-auto"><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>
                                             )}

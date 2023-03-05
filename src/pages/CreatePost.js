@@ -27,7 +27,6 @@ function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
 
   return (
     <>
-    {console.log(isAuth)}
       <Container className="mt-5">
         {!isAuth && <h1 className="h3 mb-3">Login to create post</h1>}
           <Form>

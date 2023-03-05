@@ -12,6 +12,7 @@ function Login({ setIsAuth, setModalShow, setModalText, setModalConfirmFn }) {
     signInWithPopup(auth, provider).then((result) => {
       localStorage.setItem("isAuth", true);
       localStorage.setItem("authuid", auth.currentUser.uid);
+      localStorage.setItem("name", auth.currentUser.displayName);
       setIsAuth(true);
       navigate("/");
       setModalShow(true);

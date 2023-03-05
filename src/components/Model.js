@@ -11,20 +11,20 @@ function Model({ show, modalConfirmPress, modalText, hideModal }) {
         <Modal
             show={show}
             onHide={hideModal}
-            size="lg"
+            size="sm"
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    <h4>{modalText}</h4>
+                    <h5 className='mb-0'>{modalText}</h5>
                 </Modal.Title>
             </Modal.Header>
             {/* <Modal.Body>
                 <h4>{modalText}</h4>
             </Modal.Body> */}
             <Modal.Footer>
-                <Button onClick={modalConfirmPress}>Confirm</Button>
+                <Button className='btn-sm' variant="outline-dark" onClick={modalConfirmPress}>Confirm</Button>
             </Modal.Footer>
         </Modal>
     );

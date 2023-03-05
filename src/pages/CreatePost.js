@@ -3,6 +3,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Container } from "react-bootstrap";
+import { serverTimestamp } from "firebase/firestore";
 
 function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
   const [title, setTitle] = useState("");
@@ -18,6 +19,7 @@ function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
       title,
       postText,
       author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
+      time: serverTimestamp()
     });
     navigate("/");
     setModalShow(true);

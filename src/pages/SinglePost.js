@@ -84,8 +84,9 @@ function SinglePost({ setModalConfirmFn, setModalText, setModalShow, isAuth }) {
                                 {post.postText}
                             </div>
                             <hr />
-                            <div>
-                                Author: <span className="text-primary">@{post.author.name}</span>
+                            <div className="d-flex justify-content-between">
+                                <span>Author: <span className="text-primary">@{post.author.name}</span></span>
+                                <span>Date: <span className="text-dark">{new Date(post.time.seconds * 1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span></span>
                             </div>
                         </Stack>
                     </>}

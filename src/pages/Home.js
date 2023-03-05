@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDocs, collection, deleteDoc, doc, query, where } from "firebase/firestore";
+import { getDocs, collection, deleteDoc, doc, query, where, orderBy } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { Link } from "react-router-dom";
 
@@ -19,9 +19,12 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
 
   const getPosts = async () => {
     try {
-      const postsCollectionRef = query(collection(db, "posts"));
+      const postsCollectionRef = query(collection(db, "posts"), orderBy("time", "desc"));
       const data = await getDocs(postsCollectionRef);
-      setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setPostList(data.docs.map((doc) => ({
+        ...doc.data(), id: doc.id,
+        date: new Date(doc.data().time.seconds * 1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+      })));
 
     } catch (error) {
       alert(error);
@@ -74,7 +77,10 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
                     {post.title.length > 100 ? `${post.title.slice(0, 75)}...` : `${post.title}`}
                   </Card.Header>
                   <Card.Body>
-                    <Card.Subtitle className="mb-2 text-muted">@{post.author.name}</Card.Subtitle>
+                    <div className="d-flex">
+                      <Card.Subtitle style={{ fontSize: "small" }} className="mb-2 text-muted me-auto">@{post.author.name}</Card.Subtitle>
+                      <Card.Subtitle style={{ fontSize: "small" }} className="mb-2 text-muted ms-auto">{post.date}</Card.Subtitle>
+                    </div>
                     <Card.Text>
                       {`${post.postText.slice(0, 100)}...`}
                     </Card.Text>

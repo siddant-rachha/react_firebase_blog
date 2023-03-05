@@ -11,6 +11,7 @@ function Login({ setIsAuth, setModalShow, setModalText, setModalConfirmFn }) {
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider).then((result) => {
       localStorage.setItem("isAuth", true);
+      localStorage.setItem("authuid", auth.currentUser.uid);
       setIsAuth(true);
       navigate("/");
       setModalShow(true);

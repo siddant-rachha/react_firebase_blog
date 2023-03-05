@@ -65,7 +65,7 @@ function App() {
           setIsAuth={setIsAuth}
           setModalText={setModalText}
           setModalShow={setModalShow} />} />
-        <Route path="/mypost" />
+        <Route path="/mypost" element={<Home />} />
         <Route path="/:id" element={<SinglePost />} />
       </Routes>
     </>

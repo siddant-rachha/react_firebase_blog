@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDocs, collection, deleteDoc, doc, query, where } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 import { Stack, Container, Button, Spinner } from "react-bootstrap";
@@ -15,22 +15,11 @@ import Row from 'react-bootstrap/Row';
 
 function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
 
-  const location = useLocation();
   const [postLists, setPostList] = useState(null);
-  const [mypost, setMyPost] = useState(null);
-
-
-  let postsCollectionRef = "";
-  if (location.pathname == '/mypost') {
-    postsCollectionRef = query(collection(db, "posts"), where("author.id", "==", localStorage.authuid));
-  }
-  if (location.pathname == '/') {
-    postsCollectionRef = query(collection(db, "posts"));
-  }
-
 
   const getPosts = async () => {
     try {
+      const postsCollectionRef = query(collection(db, "posts"));
       const data = await getDocs(postsCollectionRef);
       setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
 
@@ -40,9 +29,8 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
   };
 
   useEffect(() => {
-    ((location.pathname == '/mypost') ? setMyPost(true): setMyPost(false))
     getPosts();
-  }, [location.pathname]);
+  }, []);
 
   const deletePostClick = (id) => {
 
@@ -69,13 +57,15 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
     <>
       <div className="mt-3"></div>
       <Container>
-        {postLists == null ?
+
+        {(postLists == null) &&
           <>
             <Spinner className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }} animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
             </Spinner>
-          </> :
+          </>}
 
+        {postLists != null && postLists?.length > 0 &&
           <Row xs={1} md={2} lg={3} xl={4} className="g-4">
             {postLists.map((post) => (
               <Col key={post.id}>
@@ -103,9 +93,10 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
               </Col>
             ))}
           </Row>
-
         }
+
         {postLists?.length == 0 && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>No Posts available</h3>}
+
       </Container>
       <div className="mt-5"></div>
     </>

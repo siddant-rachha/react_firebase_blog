@@ -15,6 +15,7 @@ import SinglePost from "./pages/SinglePost";
 //packages imports
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import MyPosts from './pages/MyPosts';
 
 
 function App() {
@@ -65,7 +66,11 @@ function App() {
           setIsAuth={setIsAuth}
           setModalText={setModalText}
           setModalShow={setModalShow} />} />
-        <Route path="/mypost" element={<Home />} />
+        <Route path="/mypost" element={<MyPosts
+          isAuth={isAuth}
+          setModalConfirmFn={setModalConfirmFn}
+          setModalText={setModalText}
+          setModalShow={setModalShow} />} />
         <Route path="/:id" element={<SinglePost />} />
       </Routes>
     </>

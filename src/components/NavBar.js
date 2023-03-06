@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, NavLink } from "react-router-dom";
+import { Link, useNavigate, NavLink, useLocation } from "react-router-dom";
 import { auth, provider } from "../firebase-config";
 import { signOut } from "firebase/auth";
 
@@ -12,6 +12,8 @@ import Navbar from 'react-bootstrap/Navbar';
 function NavBar({ isAuth, setModalText, setModalShow, setModalConfirmFn, setIsAuth }) {
 
     const navigate = useNavigate();
+    const location = useLocation();
+
 
     const logoutClicked = () => {
         setModalText("Do you want to logout?")
@@ -35,10 +37,10 @@ function NavBar({ isAuth, setModalText, setModalShow, setModalConfirmFn, setIsAu
                 <Container className='flex-wrap'>
                     <Navbar.Brand as={Link} to="/">
                         <img
+                            className={`${location.pathname == '/' && "brand-active"}`+` d-inline-block align-top`}
                             src="https://icon-library.com/images/icon-blogger/icon-blogger-2.jpg"
                             width="30"
                             height="30"
-                            className="d-inline-block align-top"
                             alt="React Bootstrap logo"
                         />
                     </Navbar.Brand>

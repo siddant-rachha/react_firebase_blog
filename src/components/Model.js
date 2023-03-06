@@ -24,7 +24,7 @@ function Model({ show, modalConfirmPress, modalText, hideModal }) {
                 <h4>{modalText}</h4>
             </Modal.Body> */}
             <Modal.Footer>
-                <Button className='btn-sm' variant="outline-dark" onClick={modalConfirmPress}>Confirm</Button>
+                <Button className='btn-sm' variant="outline-primary" onClick={modalConfirmPress}>Confirm</Button>
             </Modal.Footer>
         </Modal>
     );

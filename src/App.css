@@ -14,3 +14,8 @@ nav a.active {
   color: white;
   text-decoration: underline;
 }
+
+nav .brand-active {
+  border: 2px solid grey;
+  border-radius: 1rem
+}

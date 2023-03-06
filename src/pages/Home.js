@@ -4,7 +4,7 @@ import { db } from "../firebase-config";
 import { Link } from "react-router-dom";
 
 
-import { Stack, Container, Button, Spinner } from "react-bootstrap";
+import { Stack, Container, Button, Spinner, DropdownButton, Dropdown } from "react-bootstrap";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
@@ -13,13 +13,15 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
+function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow, ButtonGroup }) {
 
   const [postLists, setPostList] = useState(null);
+  const [dropdown, setDropdown] = useState("latest")
 
   const getPosts = async () => {
     try {
-      const postsCollectionRef = query(collection(db, "posts"), orderBy("time", "desc"));
+      const postsCollectionRef = dropdown == "latest" ? query(collection(db, "posts"), orderBy("time", "desc")) :
+        query(collection(db, "posts"), orderBy("time"))
       const data = await getDocs(postsCollectionRef);
       setPostList(data.docs.map((doc) => ({
         ...doc.data(), id: doc.id,
@@ -33,7 +35,7 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
 
   useEffect(() => {
     getPosts();
-  }, []);
+  }, [dropdown]);
 
   const deletePostClick = (id) => {
 
@@ -60,6 +62,17 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
     <>
       <div className="mt-3"></div>
       <Container>
+        <div className="mb-3 d-flex justify-content-end">
+          <DropdownButton className=""
+            as={ButtonGroup}
+            id="dropdwon"
+            variant="outline-primary"
+            title="sort"
+          >
+            <Dropdown.Item eventKey="1" onClick={() => setDropdown("latest")} active={dropdown == "latest" ? true : false} >Latest</Dropdown.Item>
+            <Dropdown.Item eventKey="2" onClick={() => setDropdown("oldest")} active={dropdown == "oldest" ? true : false} >Oldest</Dropdown.Item>
+          </DropdownButton>
+        </div>
 
         {(postLists == null) &&
           <>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getDocs, collection, deleteDoc, doc, query, where, orderBy } from "firebase/firestore";
+import { getDocs, collection, deleteDoc, doc, query, limit, orderBy, getCountFromServer, startAt, startAfter } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { Link } from "react-router-dom";
 
 
-import { Stack, Container, Button, Spinner, DropdownButton, Dropdown } from "react-bootstrap";
+import { Stack, Container, Button, Spinner, DropdownButton, Dropdown, Pagination } from "react-bootstrap";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
@@ -16,13 +16,29 @@ import Row from 'react-bootstrap/Row';
 function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow, ButtonGroup }) {
 
   const [postLists, setPostList] = useState(null);
-  const [dropdown, setDropdown] = useState("latest")
+  const [dropdown, setDropdown] = useState("latest");
+  const [limitState, setLimit] = useState(2);
+  const [countstate, setCount] = useState(0);
 
   const getPosts = async () => {
     try {
-      const postsCollectionRef = dropdown == "latest" ? query(collection(db, "posts"), orderBy("time", "desc")) :
-        query(collection(db, "posts"), orderBy("time"))
+
+      const getCountofPosts = async () => {
+        const coll = collection(db, "posts");
+        const q = query(coll 
+          // ,where("state", "==", "CA")
+          );
+        const snapshot = await getCountFromServer(q);
+        setCount(snapshot.data().count);
+      }
+      getCountofPosts();
+
+
+      const postsCollectionRef = dropdown == "latest" ? query(collection(db, "posts"), orderBy("time", "desc"), limit(limitState), startAt(0)) :
+        query(collection(db, "posts"), orderBy("time"), limit(limitState))
       const data = await getDocs(postsCollectionRef);
+
+
       setPostList(data.docs.map((doc) => ({
         ...doc.data(), id: doc.id,
         date: new Date(doc.data().time.seconds * 1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -33,9 +49,10 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow, ButtonGro
     }
   };
 
+
   useEffect(() => {
     getPosts();
-  }, [dropdown]);
+  }, [dropdown, limitState]);
 
   const deletePostClick = (id) => {
 
@@ -62,12 +79,22 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow, ButtonGro
     <>
       <div className="mt-3"></div>
       <Container>
-        <div className="mb-3 d-flex justify-content-end">
-          <DropdownButton className=""
+        <div className="filter d-flex justify-content-end mb-3">
+          <DropdownButton className="ms-3"
             as={ButtonGroup}
-            id="dropdwon"
+            id="limit"
             variant="outline-primary"
-            title="sort"
+            title={`PerPage ${limitState}`}
+          >
+            <Dropdown.Item eventKey="1" onClick={() => setLimit(2)} active={limitState == 2 ? true : false} >2</Dropdown.Item>
+            <Dropdown.Item eventKey="2" onClick={() => setLimit(3)} active={limitState == 3 ? true : false} >3</Dropdown.Item>
+            <Dropdown.Item eventKey="2" onClick={() => setLimit(10)} active={limitState == 10 ? true : false} >10</Dropdown.Item>
+          </DropdownButton>
+          <DropdownButton className="ms-3"
+            as={ButtonGroup}
+            id="dropdown"
+            variant="outline-primary"
+            title={dropdown}
           >
             <Dropdown.Item eventKey="1" onClick={() => setDropdown("latest")} active={dropdown == "latest" ? true : false} >Latest</Dropdown.Item>
             <Dropdown.Item eventKey="2" onClick={() => setDropdown("oldest")} active={dropdown == "oldest" ? true : false} >Oldest</Dropdown.Item>
@@ -111,11 +138,21 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow, ButtonGro
                 </Card>
               </Col>
             ))}
+
+
+
           </Row>
         }
 
         {postLists?.length == 0 && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>No Posts available</h3>}
 
+        <div className="mt-5"></div>
+
+        <Pagination className="d-flex justify-content-center align-items-center">
+          <Pagination.First />
+          <p className="mb-0 ms-3 me-3">{`Page 1 of ${Math.ceil(countstate/limitState)}`}</p>
+          <Pagination.Last />
+        </Pagination>
       </Container>
       <div className="mt-5"></div>
     </>

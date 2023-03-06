@@ -49,8 +49,8 @@ function NavBar({ isAuth, setModalText, setModalShow, setModalConfirmFn, setIsAu
                         <NavLink className="ps-sm-3 pe-sm-3 pe-2 ps-2" to='/mypost'>MyPost</NavLink>
                     </Nav>
                     <Nav className="ms-auto flex-wrap justify-content-end flex-column">
-                        {!isAuth ? <Button onClick={login} variant="outline-light btn-sm">Login</Button> :
-                            <><Button onClick={logoutClicked} variant="outline-danger btn-sm">Logout</Button></>}
+                        {!isAuth ? <Button onClick={login} variant="outline-light">Login</Button> :
+                            <><Button onClick={logoutClicked} variant="outline-danger">Logout</Button></>}
                     </Nav>
                     {isAuth && <p style={{ fontSize: "x-small" }} className='position-absolute start-0 bottom-0 mb-0 text-light text-muted'>@ {localStorage?.name}</p>}
                 </Container>

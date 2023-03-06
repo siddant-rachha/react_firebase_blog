@@ -11,15 +11,14 @@ import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
 import Login from "./pages/Login";
 import SinglePost from "./pages/SinglePost";
+import MyPosts from './pages/MyPosts';
 
 //packages imports
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import MyPosts from './pages/MyPosts';
 
 
 function App() {
-  const navigate = useNavigate();
 
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
   const [modalShow, setModalShow] = useState(false);
@@ -77,7 +76,7 @@ function App() {
           setModalShow={setModalShow}
           isAuth={isAuth}
         />} />
-        <Route path="*" element={<h1>404 page not found</h1>} />
+        <Route path="*" element={<h1 className='text-center mt-5'>404 page not found</h1>} />
       </Routes>
     </>
   );

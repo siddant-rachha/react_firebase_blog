@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Form, Button, Container } from "react-bootstrap";
 import { serverTimestamp } from "firebase/firestore";
 
+
 function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");

@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
+
 import { Link, useNavigate, NavLink, useLocation } from "react-router-dom";
-import { auth, provider } from "../firebase-config";
+import { auth } from "../firebase-config";
 import { signOut } from "firebase/auth";
 
-import { Container, Button } from 'react-bootstrap';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { Container, Button, Nav, Navbar } from 'react-bootstrap';
 
 
 

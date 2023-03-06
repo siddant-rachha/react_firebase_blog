@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { doc, getDoc, deleteDoc } from "firebase/firestore";
-import { db, auth } from "../firebase-config";
-import { useNavigate, useParams } from "react-router-dom";
 
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { db } from "../firebase-config";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Stack, Container, Button, Spinner } from "react-bootstrap";
 

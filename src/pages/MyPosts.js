@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getDocs, collection, deleteDoc, doc, query, where, orderBy } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { Link } from "react-router-dom";
+import DropDown from "../components/DropDown";
+import Cards from "../components/Cards";
 
 
-import { Stack, Container, Button, Spinner, DropdownButton, Dropdown, ButtonGroup } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
-
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 
 function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
 
@@ -65,17 +60,10 @@ function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
         <>
             <div className="mt-3"></div>
             <Container>
-                <div className="mb-3 d-flex justify-content-end">
-                    <DropdownButton className=""
-                        as={ButtonGroup}
-                        id="dropdwon"
-                        variant="outline-primary"
-                        title="sort"
-                    >
-                        <Dropdown.Item eventKey="1" onClick={() => setDropdown("latest")} active={dropdown == "latest" ? true : false} >Latest</Dropdown.Item>
-                        <Dropdown.Item eventKey="2" onClick={() => setDropdown("oldest")} active={dropdown == "oldest" ? true : false} >Oldest</Dropdown.Item>
-                    </DropdownButton>
-                </div>
+                {postLists?.length > 0 &&
+                    <div className="mb-3 d-flex justify-content-end">
+                        <DropDown dropdown={dropdown} setDropdown={setDropdown} isAuth={isAuth} />
+                    </div>}
 
                 {(postLists == null) && localStorage.authuid &&
                     <>
@@ -85,36 +73,7 @@ function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
                     </>}
 
                 {postLists != null && postLists?.length > 0 &&
-                    <Row xs={1} md={2} lg={3} className="g-4">
-                        {postLists.map((post) => (
-                            <Col key={post.id}>
-                                <Card bg='light'>
-                                    <Card.Header className="h5">
-                                        {post.title.length > 100 ? `${post.title.slice(0, 75)}...` : `${post.title}`}
-                                    </Card.Header>
-                                    <Card.Body>
-                                        <div className="d-flex">
-                                            <Card.Subtitle style={{ fontSize: "small" }} className="mb-2 text-muted me-auto">@{post.author.name}</Card.Subtitle>
-                                            <Card.Subtitle style={{ fontSize: "small" }} className="mb-2 text-muted ms-auto">{post.date}</Card.Subtitle>
-                                        </div>
-                                        <Card.Text>
-                                            {`${post.postText.slice(0, 100)}...`}
-                                        </Card.Text>
-                                    </Card.Body>
-                                    <Card.Body>
-                                        <Stack direction="horizontal">
-                                            <Link to={`/posts/${post.id}`}>
-                                                Read More
-                                            </Link>
-                                            {isAuth && post.author.id === localStorage.authuid && (
-                                                <Button onClick={() => deletePostClick(post.id)} variant="outline-danger" className="ms-auto"><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>
-                                            )}
-                                        </Stack>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        ))}
-                    </Row>
+                    <Cards postLists={postLists} deletePostClick={deletePostClick} isAuth={isAuth} />
                 }
                 {localStorage.authuid == null && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>Login to see your posts</h3>}
                 {postLists?.length == 0 && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>You have no posts. Create one.</h3>}

@@ -4,7 +4,9 @@ import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from '@fortawesome/free-brands-svg-icons' 
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+
+
 function Login({ setIsAuth, setModalShow, setModalText, setModalConfirmFn }) {
   let navigate = useNavigate();
 

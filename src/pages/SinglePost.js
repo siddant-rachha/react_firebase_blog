@@ -65,7 +65,7 @@ function SinglePost({ setModalConfirmFn, setModalText, setModalShow, isAuth }) {
             <Container>
                 <div className="mt-3"></div>
                 {post == null &&
-                    <Spinner className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }} animation="border" role="status">
+                    <Spinner style={{ position: "absolute", top: "40%", left: "50%", left: "calc(50% - 1rem)" }} animation="border" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 }
@@ -80,7 +80,7 @@ function SinglePost({ setModalConfirmFn, setModalText, setModalShow, isAuth }) {
                         <hr></hr>
                         <Stack gap={3} className="mt-1">
                             <p className="h3 mt-3 fw-bold text-decoration-underline">{post.title}</p>
-                            <div style={{whiteSpace: "pre-wrap"}}>
+                            <div style={{ whiteSpace: "pre-wrap" }}>
                                 {post.postText}
                             </div>
                             <hr />

@@ -58,6 +58,7 @@ function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
 
     return (
         <>
+            {console.log('MYPOSTS.JS RENDERED')}
             <div className="mt-3"></div>
             <Container>
                 {postLists?.length > 0 &&
@@ -67,7 +68,7 @@ function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
 
                 {(postLists == null) && localStorage.authuid &&
                     <>
-                        <Spinner style={{ position: "absolute", top: "40%", left: "50%", left: "calc(50% - 1rem)" }} animation="border" role="status">
+                        <Spinner style={{ position: "absolute", top: "40%", left: "calc(50% - 1rem)" }} animation="border" role="status">
                             <span className="visually-hidden">Loading...</span>
                         </Spinner>
                     </>}

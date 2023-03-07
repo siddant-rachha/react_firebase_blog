@@ -32,6 +32,8 @@ function NavBar({ isAuth, setModalText, setModalShow, setModalConfirmFn, setIsAu
 
     return (
         <>
+            {console.log('NAVBAR COMPONENT.JS RENDERED')}
+
             <Navbar bg="dark" variant="dark">
                 <Container className='flex-wrap'>
                     <Navbar.Brand as={Link} to="/">

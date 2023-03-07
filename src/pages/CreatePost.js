@@ -33,23 +33,24 @@ function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
 
   return (
     <>
+      {console.log('CREATE POST.JS RENDERED')}
       <Container className="mt-5">
         {!isAuth && <h1 className="h3 mb-3">Login to create post</h1>}
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Title</Form.Label>
-              <Form.Control disabled={isAuth?false:true} onChange={(event) => setTitle(event.target.value)} type="text" placeholder="Enter title" />
-            </Form.Group>
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Title</Form.Label>
+            <Form.Control disabled={isAuth ? false : true} onChange={(event) => setTitle(event.target.value)} type="text" placeholder="Enter title" />
+          </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Post Text</Form.Label>
-              <Form.Control disabled={isAuth?false:true} style={{ height: "40vh" }} onChange={(event) => setPostText(event.target.value)} as="textarea" placeholder="Write post here..." />
-            </Form.Group>
-            <Button disabled={isAuth&&!btndisabled?false:true} onClick={(e) => createPost(e)} variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-          <div className="mb-3"></div>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Post Text</Form.Label>
+            <Form.Control disabled={isAuth ? false : true} style={{ height: "40vh" }} onChange={(event) => setPostText(event.target.value)} as="textarea" placeholder="Write post here..." />
+          </Form.Group>
+          <Button disabled={isAuth && !btndisabled ? false : true} onClick={(e) => createPost(e)} variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+        <div className="mb-3"></div>
       </Container>
     </>
   );

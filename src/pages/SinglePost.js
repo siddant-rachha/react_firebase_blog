@@ -62,10 +62,12 @@ function SinglePost({ setModalConfirmFn, setModalText, setModalShow, isAuth }) {
 
     return (
         <>
+            {console.log('SINGLEPOST.JS RENDERED')}
+
             <Container>
                 <div className="mt-3"></div>
                 {post == null &&
-                    <Spinner style={{ position: "absolute", top: "40%", left: "50%", left: "calc(50% - 1rem)" }} animation="border" role="status">
+                    <Spinner style={{ position: "absolute", top: "40%", left: "calc(50% - 1rem)" }} animation="border" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 }

@@ -25,10 +25,13 @@ function Login({ setIsAuth, setModalShow, setModalText, setModalConfirmFn }) {
   };
 
   return (
-    <Container style={{height:"50vh"}} className="d-flex flex-column align-items-center justify-content-center">
+    <>
+      {console.log('LOGIN.JS RENDERED')}
+      <Container style={{ height: "50vh" }} className="d-flex flex-column align-items-center justify-content-center">
         <p className="">Sign In With Google to Continue</p>
         <Button onClick={signInWithGoogle}><FontAwesomeIcon className="me-3" icon={faGoogle} />Sign in Google</Button>
-    </Container>
+      </Container>
+    </>
 
   );
 }

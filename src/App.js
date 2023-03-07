@@ -21,7 +21,7 @@ import { useState } from "react";
 function App() {
 
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
-  const [modalShow, setModalShow] = useState(false);
+  const [show, setModalShow] = useState(false);
   const [modalConfirmFn, setModalConfirmFn] = useState();
   const [modalText, setModalText] = useState("");
 
@@ -33,49 +33,30 @@ function App() {
     setModalConfirmFn(() => () => { });
   }
 
+  const props = {
+    show,
+    hideModal,
+    setModalShow,
+    isAuth,
+    setIsAuth,
+    modalText,
+    setModalText,
+    modalConfirmPress,
+    setModalConfirmFn
+  }
 
 
   return (
     <>
       {console.log('APP.JS RENDERED')}
-      <Model
-        show={modalShow}
-        hideModal={hideModal}
-        modalConfirmPress={modalConfirmPress}
-        modalText={modalText} />
-      <NavBar
-        setIsAuth={setIsAuth}
-        isAuth={isAuth}
-        setModalConfirmFn={setModalConfirmFn}
-        setModalText={setModalText}
-        setModalShow={setModalShow} />
+      <Model {...props} />
+      <NavBar {...props} />
       <Routes>
-        <Route path="/" element={<Home
-          isAuth={isAuth}
-          setModalConfirmFn={setModalConfirmFn}
-          setModalText={setModalText}
-          setModalShow={setModalShow} />} />
-        <Route path="/createpost" element={<CreatePost
-          setModalConfirmFn={setModalConfirmFn}
-          isAuth={isAuth}
-          setModalShow={setModalShow}
-          setModalText={setModalText} />} />
-        <Route path="/login" element={<Login
-          setModalConfirmFn={setModalConfirmFn}
-          setIsAuth={setIsAuth}
-          setModalText={setModalText}
-          setModalShow={setModalShow} />} />
-        <Route path="/mypost" element={<MyPosts
-          isAuth={isAuth}
-          setModalConfirmFn={setModalConfirmFn}
-          setModalText={setModalText}
-          setModalShow={setModalShow} />} />
-        <Route path="/posts/:postId" element={<SinglePost
-          setModalConfirmFn={setModalConfirmFn}
-          setModalText={setModalText}
-          setModalShow={setModalShow}
-          isAuth={isAuth}
-        />} />
+        <Route path="/" element={<Home {...props} />} />
+        <Route path="/createpost" element={<CreatePost {...props} />} />
+        <Route path="/login" element={<Login {...props} />} />
+        <Route path="/mypost" element={<MyPosts {...props} />} />
+        <Route path="/posts/:postId" element={<SinglePost {...props} />} />
         <Route path="*" element={<h1 className='text-center mt-5'>404 page not found</h1>} />
       </Routes>
     </>

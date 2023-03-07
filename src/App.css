@@ -16,6 +16,6 @@ nav a.active {
 }
 
 nav .brand-active {
-  border: 2px solid grey;
+  border: 2px solid lightgray;
   border-radius: 1rem
 }

@@ -7,11 +7,20 @@ import Cards from "../components/Cards";
 
 import { Container, Spinner } from "react-bootstrap";
 
+import { useDispatch, useSelector } from "react-redux";
+import { modelActions } from "../store/modelSlice";
 
-function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
+
+function MyPosts({ isAuth }) {
 
     const [postLists, setPostList] = useState(null);
     const [dropdown, setDropdown] = useState("latest")
+
+    const [deleteId, setDeleteId] = useState("")
+    const dispatch = useDispatch();
+    const model = useSelector((state) => state.model)
+
+
 
     const getPosts = async () => {
         try {
@@ -33,28 +42,37 @@ function MyPosts({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
 
     useEffect(() => {
         if (localStorage.authuid == null) return;
+
+        if (model.btnFunction == "delete_MyPost") {
+            const deletePost = async () => {
+                try {
+                    const postDoc = doc(db, "posts", deleteId);
+                    await deleteDoc(postDoc);
+                    getPosts();
+
+                } catch (error) {
+                    alert(error);
+                }
+                finally {
+                    dispatch(modelActions.setModel({ text: "", display: false, btnFunction: "" }))
+                }
+            }
+            deletePost();
+        }
+
+
+    }, [model.pressed]);
+
+    useEffect(() => {
+        if (localStorage.authuid == null) return;
         getPosts();
+
     }, [dropdown]);
 
     const deletePostClick = (id) => {
-
-        setModalText("Do you want to delete?")
-        setModalShow(true)
-        setModalConfirmFn(() => () =>
-            deletePost(id)
-        )
+        setDeleteId(id);
+        dispatch(modelActions.setModel({ text: "Do you want to delete?", display: true, btnFunction: "delete_MyPost" }))
     };
-
-    const deletePost = async (id) => {
-        try {
-            const postDoc = doc(db, "posts", id);
-            await deleteDoc(postDoc);
-            getPosts();
-
-        } catch (error) {
-            alert(error);
-        }
-    }
 
     return (
         <>

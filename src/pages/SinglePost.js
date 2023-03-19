@@ -8,57 +8,66 @@ import { Stack, Container, Button, Spinner } from "react-bootstrap";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { modelActions } from "../store/modelSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-function SinglePost({ setModalConfirmFn, setModalText, setModalShow, isAuth }) {
+function SinglePost({ isAuth }) {
 
     const [post, setPost] = useState(null);
+    const [deleteId, setDeleteId] = useState("")
+
 
     const { postId } = useParams();
 
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+    const model = useSelector((state) => state.model)
+
+    const getSinglePost = async () => {
+        const docRef = doc(db, "posts", postId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            console.log("Document data:", docSnap.data());
+            setPost(docSnap.data());
+        } else {
+            // doc.data() will be undefined in this case
+            setPost([]);
+        }
+    };
 
     useEffect(() => {
-        const getSinglePost = async () => {
-            const docRef = doc(db, "posts", postId);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                console.log("Document data:", docSnap.data());
-                setPost(docSnap.data());
-            } else {
-                // doc.data() will be undefined in this case
-                setPost([]);
-            }
-            console.log("called")
-        };
         getSinglePost();
     }, []);
 
+    useEffect(() => {
+        if (model.btnFunction == "delete_Single") {
+            const deletePost = async () => {
+                try {
+                    const postDoc = doc(db, "posts", deleteId);
+                    console.log(postDoc)
+                    await deleteDoc(postDoc);
+                    dispatch(modelActions.setModel({ text: "Post deleted", display: false, btnFunction: "" }))
+
+                    navigate("/");
+
+                } catch (error) {
+                    alert(error);
+                }
+                finally {
+                    dispatch(modelActions.setModel({ text: "", display: false, btnFunction: "" }))
+                }
+            }
+            deletePost();
+        }
+
+    }, [model.pressed])
+
     const deletePostClick = (id) => {
 
-        setModalText("Do you want to delete?")
-        setModalShow(true)
-        setModalConfirmFn(() => () =>
-            deletePost(id)
-        )
+        setDeleteId(id);
+        dispatch(modelActions.setModel({ text: "Do you want to delete?", display: true, btnFunction: "delete_Single" }))
     };
-
-    const deletePost = async (id) => {
-        try {
-            const postDoc = doc(db, "posts", id);
-            console.log(postDoc)
-            await deleteDoc(postDoc);
-            setModalText("Post deleted")
-            setModalShow(true)
-            setModalConfirmFn(() => () => { }
-            )
-            navigate("/");
-
-
-        } catch (error) {
-            alert(error);
-        }
-    }
 
     return (
         <>

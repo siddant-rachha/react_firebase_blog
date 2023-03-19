@@ -21,28 +21,10 @@ import { useState } from "react";
 function App() {
 
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
-  const [show, setModalShow] = useState(false);
-  const [modalConfirmFn, setModalConfirmFn] = useState();
-  const [modalText, setModalText] = useState("");
-
-  const hideModal = () => setModalShow(false)
-
-  const modalConfirmPress = () => {
-    modalConfirmFn();
-    setModalShow(false);
-    setModalConfirmFn(() => () => { });
-  }
 
   const props = {
-    show,
-    hideModal,
-    setModalShow,
     isAuth,
-    setIsAuth,
-    modalText,
-    setModalText,
-    modalConfirmPress,
-    setModalConfirmFn
+    setIsAuth
   }
 
 

@@ -1,4 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+//redux
+import { useSelector, useDispatch } from 'react-redux'
+import { modelActions } from '../store/modelSlice';
+//
 
 import { Link, useNavigate, NavLink, useLocation } from "react-router-dom";
 import { auth } from "../firebase-config";
@@ -8,27 +13,35 @@ import { Container, Button, Nav, Navbar } from 'react-bootstrap';
 
 
 
-function NavBar({ isAuth, setModalText, setModalShow, setModalConfirmFn, setIsAuth }) {
+function NavBar({ isAuth }) {
 
     const navigate = useNavigate();
     const location = useLocation();
 
+    //redux
+    const dispatch = useDispatch()
+    const model = useSelector((state)=>state.model)
+    //
 
     const logoutClicked = () => {
-        setModalText("Do you want to logout?")
-        setModalShow(true)
-        setModalConfirmFn(() => () =>
-            signOut(auth).then(() => {
-                localStorage.clear();
-                setIsAuth(false);
-                navigate('/login');
-            })
-        )
+        dispatch(modelActions.setModel({ text: "Do you want to logout?", display: true, btnFunction: "logout" }))
     }
 
     const login = () => {
         navigate('/login');
     };
+
+    useEffect(()=>{
+        if(model.btnFunction == 'logout'){
+            console.log("logout runned")
+            signOut(auth).then(() => {
+                localStorage.clear();
+                setIsAuth(false);
+                navigate('/login');
+                dispatch(modelActions.setModel({ text: "", display: false, btnFunction: "" }))
+            })
+        }
+    }, [model.pressed])
 
     return (
         <>
@@ -38,7 +51,7 @@ function NavBar({ isAuth, setModalText, setModalShow, setModalConfirmFn, setIsAu
                 <Container className='flex-wrap'>
                     <Navbar.Brand as={Link} to="/">
                         <img
-                            className={`${location.pathname == '/' && "brand-active"}`+` d-inline-block align-top`}
+                            className={`${location.pathname == '/' && "brand-active"}` + ` d-inline-block align-top`}
                             src="https://icon-library.com/images/icon-blogger/icon-blogger-2.jpg"
                             width="30"
                             height="30"

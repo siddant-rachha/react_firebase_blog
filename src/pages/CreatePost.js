@@ -4,9 +4,18 @@ import { db, auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Container } from "react-bootstrap";
 import { serverTimestamp } from "firebase/firestore";
+import { useDispatch } from "react-redux";
 
+//redux
+import { modelActions } from "../store/modelSlice";
+//
 
-function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
+function CreatePost({ isAuth }) {
+
+  //redux
+  const dispatch = useDispatch();
+  //
+
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");
   const [btndisabled, setbtndisabled] = useState(false);
@@ -18,17 +27,26 @@ function CreatePost({ isAuth, setModalShow, setModalText, setModalConfirmFn }) {
     e.preventDefault();
     if (title.trim() == "" || postText.trim() == "") { alert("title or post, empty"); return; }
     setbtndisabled(true);
-    await addDoc(postsCollectionRef, {
-      title,
-      postText,
-      author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
-      time: serverTimestamp()
-    });
-    navigate("/");
-    setModalShow(true);
-    setModalText("Post Created")
-    setModalConfirmFn(() => () => { });
-    setbtndisabled(false);
+    try {
+      await addDoc(postsCollectionRef, {
+        title,
+        postText,
+        author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
+        time: serverTimestamp()
+      });
+      navigate("/");
+      dispatch(modelActions.setModel({ text: "Post Created", display: true }))
+
+    }
+    catch (e) {
+      console.log(e)
+    }
+    finally {
+
+      setbtndisabled(false);
+    }
+
+
   };
 
   return (

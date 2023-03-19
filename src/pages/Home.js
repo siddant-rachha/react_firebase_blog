@@ -10,10 +10,21 @@ import { Container, Spinner } from "react-bootstrap";
 
 import Cards from "../components/Cards";
 
-function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { modelActions } from "../store/modelSlice";
+//
+
+function Home({ isAuth }) {
+
+  //redux
+  const dispatch = useDispatch()
+  const model = useSelector((state) => state.model)
+  //
 
   const [postLists, setPostList] = useState(null);
   const [dropdown, setDropdown] = useState("latest")
+  const [deleteId, setDeleteId] = useState("")
 
   const getPosts = async () => {
     try {
@@ -31,29 +42,42 @@ function Home({ isAuth, setModalConfirmFn, setModalText, setModalShow }) {
   };
 
   useEffect(() => {
-    getPosts();
-  }, [dropdown]);
+    
+    if (model.btnFunction == 'delete_Home') {
+      console.log("delete runned")
+      const deletePost = async () => {
+        try {
+          const postDoc = doc(db, "posts", deleteId);
+          console.log(postDoc)
+          await deleteDoc(postDoc);
+          getPosts();
+        }
+        catch (error) {
+          alert(error);
+        }
+        finally {
+          dispatch(modelActions.setModel({ text: "", display: false, btnFunction: "" }))
+        }
+
+      }
+      deletePost();
+
+    }
+
+  }, [model.pressed]);
+
+  useEffect(() => {
+    
+    getPosts()
+  }, [dropdown])
 
   const deletePostClick = (id) => {
 
-    setModalText("Do you want to delete?")
-    setModalShow(true)
-    setModalConfirmFn(() => () =>
-      deletePost(id)
-    )
+    setDeleteId(id)
+
+    dispatch(modelActions.setModel({ text: "Do you want to delete?", display: true, btnFunction: "delete_Home" }))
+
   };
-
-  const deletePost = async (id) => {
-    try {
-      const postDoc = doc(db, "posts", id);
-      console.log(postDoc)
-      await deleteDoc(postDoc);
-      getPosts();
-
-    } catch (error) {
-      alert(error);
-    }
-  }
 
   return (
     <>

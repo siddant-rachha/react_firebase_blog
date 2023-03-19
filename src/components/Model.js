@@ -15,6 +15,10 @@ function Model() {
     const dispatch = useDispatch()
     //
 
+    const handleClick = () => {
+        dispatch(modelActions.setModel({ pressed: !model.pressed, display: false }))
+    }
+
     return (
         <>
             {console.log('MODEL COMPONENT.JS RENDERED')}
@@ -35,8 +39,7 @@ function Model() {
                 <h4>{modalText}</h4>
             </Modal.Body> */}
                 <Modal.Footer>
-                    onClick={()=>dispatch(modelActions.setModel({ pressed: !model.pressed, display: false }))}
-                    <Button className='btn-sm' variant="outline-primary">Confirm</Button>
+                    <Button onClick={handleClick} className='btn-sm' variant="outline-primary">Confirm</Button>
                 </Modal.Footer>
             </Modal>
         </>

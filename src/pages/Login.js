@@ -1,11 +1,16 @@
-import React from "react";
+//firebase
 import { auth, provider } from "../firebase-config";
 import { signInWithPopup } from "firebase/auth";
+
+//router
 import { useNavigate } from "react-router-dom";
+
+//bootstrap, fontawesome
 import { Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
+//redux
 import { useDispatch } from "react-redux";
 import { modelActions } from "../store/modelSlice";
 import { isAuthActions } from "../store/isAuthSlice";

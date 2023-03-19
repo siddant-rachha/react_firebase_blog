@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from "react";
+//react
+import { useState, useEffect } from "react";
 
+//firebase
 import { doc, getDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
+
+//router
 import { useNavigate, useParams } from "react-router-dom";
 
+//bootstrap & fontawesome
 import { Stack, Container, Button, Spinner } from "react-bootstrap";
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+
+//redux
 import { modelActions } from "../store/modelSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,6 +27,7 @@ function SinglePost() {
 
     const navigate = useNavigate();
 
+    //redux
     const dispatch = useDispatch();
     const model = useSelector((state) => state.model)
     const authState = useSelector((state) => state.authState)

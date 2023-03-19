@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+//react
+import { useState } from "react";
+
+//firebase
 import { addDoc, collection } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
-import { Form, Button, Container } from "react-bootstrap";
 import { serverTimestamp } from "firebase/firestore";
-import { useDispatch, useSelector } from "react-redux";
+
+//bootstrap
+import { Form, Button, Container } from "react-bootstrap";
 
 //redux
+import { useDispatch, useSelector } from "react-redux";
 import { modelActions } from "../store/modelSlice";
 //
 
@@ -43,7 +48,6 @@ function CreatePost() {
       console.log(e)
     }
     finally {
-
       setbtndisabled(false);
     }
 

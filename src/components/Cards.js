@@ -1,12 +1,15 @@
-import React from 'react'
 
+//fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
+//bootstrap
 import { Card, Col, Row } from 'react-bootstrap';
+import { Stack, Button } from "react-bootstrap";
+
+//router
 import { Link } from 'react-router-dom';
 
-import { Stack, Button } from "react-bootstrap";
 
 function Cards({ postLists, deletePostClick, isAuth, uid }) {
     return (

@@ -1,8 +1,8 @@
-import React from 'react';
+//bootstrap imports
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-//redux
+//redux imports
 import { useSelector, useDispatch } from 'react-redux';
 import { modelActions } from '../store/modelSlice';
 //
@@ -35,9 +35,6 @@ function Model() {
                         <h5 className='mb-0'>{model.text}</h5>
                     </Modal.Title>
                 </Modal.Header>
-                {/* <Modal.Body>
-                <h4>{modalText}</h4>
-            </Modal.Body> */}
                 <Modal.Footer>
                     <Button onClick={handleClick} className='btn-sm' variant="outline-primary">Confirm</Button>
                 </Modal.Footer>

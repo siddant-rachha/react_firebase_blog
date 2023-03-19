@@ -1,16 +1,22 @@
-import React, { useEffect } from 'react';
 
-//redux
+//redux store imports
 import { useSelector, useDispatch } from 'react-redux'
 import { modelActions } from '../store/modelSlice';
+import { isAuthActions } from '../store/isAuthSlice';
 //
 
+//router
 import { Link, useNavigate, NavLink, useLocation } from "react-router-dom";
+
+//firebase
 import { auth } from "../firebase-config";
 import { signOut } from "firebase/auth";
 
+//react
+import { useEffect } from 'react';
+
+//bootstrap
 import { Container, Button, Nav, Navbar } from 'react-bootstrap';
-import { isAuthActions } from '../store/isAuthSlice';
 
 
 
@@ -23,7 +29,6 @@ function NavBar() {
     const dispatch = useDispatch()
     const model = useSelector((state) => state.model)
     const authState = useSelector((state) => state.authState)
-
     //
 
     const logoutClicked = () => {

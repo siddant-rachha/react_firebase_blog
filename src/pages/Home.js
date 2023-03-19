@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from "react";
+//react
+import { useEffect, useState } from "react";
+
+//firebase
 import { getDocs, collection, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 import { db } from "../firebase-config";
+
+//component
 import DropDown from "../components/DropDown";
-
-import { Container, Spinner } from "react-bootstrap";
-
-
-
-
 import Cards from "../components/Cards";
+
+//bootstrap
+import { Container, Spinner } from "react-bootstrap";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { modelActions } from "../store/modelSlice";
-//
+
+
 
 function Home() {
 
@@ -21,8 +24,6 @@ function Home() {
   const dispatch = useDispatch()
   const model = useSelector((state) => state.model)
   const authState = useSelector((state) => state.authState)
-
-  //
 
   const [postLists, setPostList] = useState(null);
   const [dropdown, setDropdown] = useState("latest")

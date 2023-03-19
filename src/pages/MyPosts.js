@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from "react";
+//react
+import { useEffect, useState } from "react";
+
+//firebase
 import { getDocs, collection, deleteDoc, doc, query, where, orderBy } from "firebase/firestore";
 import { db } from "../firebase-config";
+
+//components
 import DropDown from "../components/DropDown";
 import Cards from "../components/Cards";
 
-
+//bootstrap
 import { Container, Spinner } from "react-bootstrap";
 
+//redux
 import { useDispatch, useSelector } from "react-redux";
 import { modelActions } from "../store/modelSlice";
 

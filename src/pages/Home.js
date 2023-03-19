@@ -47,7 +47,6 @@ function Home() {
   useEffect(() => {
     
     if (model.btnFunction == 'delete_Home') {
-      console.log("delete runned")
       const deletePost = async () => {
         try {
           const postDoc = doc(db, "posts", deleteId);

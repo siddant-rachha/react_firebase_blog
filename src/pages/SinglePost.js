@@ -37,7 +37,6 @@ function SinglePost() {
         const docRef = doc(db, "posts", postId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
             setPost(docSnap.data());
         } else {
             // doc.data() will be undefined in this case
@@ -89,7 +88,6 @@ function SinglePost() {
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 }
-                {console.log(post)}
                 {post?.length != 0 && post != null &&
                     <>
                         <Stack direction="horizontal">

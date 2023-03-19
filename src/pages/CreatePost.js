@@ -45,7 +45,7 @@ function CreatePost() {
 
     }
     catch (e) {
-      console.log(e)
+      alert(e)
     }
     finally {
       setbtndisabled(false);

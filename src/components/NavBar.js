@@ -13,7 +13,7 @@ import { Container, Button, Nav, Navbar } from 'react-bootstrap';
 
 
 
-function NavBar({ isAuth }) {
+function NavBar({ isAuth, setIsAuth }) {
 
     const navigate = useNavigate();
     const location = useLocation();

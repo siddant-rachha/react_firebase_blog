@@ -24,4 +24,4 @@ export const modelSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const modelActions =  modelSlice.actions
 
-export default modelSlice.reducer
+export const modelSliceReducers =  modelSlice.reducer

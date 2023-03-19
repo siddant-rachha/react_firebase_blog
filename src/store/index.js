@@ -5,6 +5,6 @@ import {isAuthReducers} from './isAuthSlice'
 export const store = configureStore({
   reducer: {
     model: modelSliceReducers,
-    auth: isAuthReducers
+    authState: isAuthReducers
   },
 })

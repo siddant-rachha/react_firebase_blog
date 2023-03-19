@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { Stack, Button } from "react-bootstrap";
 
-function Cards({ postLists, deletePostClick, isAuth }) {
+function Cards({ postLists, deletePostClick, isAuth, uid }) {
     return (
         <>
             {console.log('CARDS COMPONENT.JS RENDERED')}
@@ -35,7 +35,7 @@ function Cards({ postLists, deletePostClick, isAuth }) {
                                         <Link to={`/posts/${post.id}`}>
                                             Read More
                                         </Link>
-                                        {isAuth && post.author.id === localStorage.authuid && (
+                                        {isAuth && post.author.id === uid && (
                                             <Button onClick={() => deletePostClick(post.id)} variant="outline-danger" className="ms-auto"><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>
                                         )}
                                     </Stack>

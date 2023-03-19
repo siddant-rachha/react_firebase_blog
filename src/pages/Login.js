@@ -5,20 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+
 import { useDispatch } from "react-redux";
 import { modelActions } from "../store/modelSlice";
+import { isAuthActions } from "../store/isAuthSlice";
 
 
-function Login({ setIsAuth }) {
+function Login() {
   let navigate = useNavigate();
   const dispatch = useDispatch()
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider).then((result) => {
-      localStorage.setItem("isAuth", true);
-      localStorage.setItem("authuid", auth.currentUser.uid);
-      localStorage.setItem("name", auth.currentUser.displayName);
-      setIsAuth(true);
+
+      dispatch(isAuthActions.setIsAuth({isAuth:true, uid: auth.currentUser.uid, displayName: auth.currentUser.displayName}))
       navigate("/");
       
       dispatch(modelActions.setModel({display:true, text:"Login Successfull"}))

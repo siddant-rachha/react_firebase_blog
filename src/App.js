@@ -17,28 +17,56 @@ import MyPosts from './pages/MyPosts';
 import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useDispatch, useSelector } from 'react-redux';
+import { isAuthActions } from './store/isAuthSlice'
+
+const auth = getAuth();
+
 
 function App() {
 
-  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
+  const dispatch = useDispatch()
+  const authState = useSelector((state) => state.authState)
 
-  const props = {
-    isAuth,
-    setIsAuth
-  }
+  onAuthStateChanged(auth, (user) => {
+
+    if(authState.isAuth == true) return
+
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      const uid = user.uid;
+      dispatch(isAuthActions.setIsAuth({
+        isAuth: true,
+        uid: user.uid,
+        displayName: user.displayName
+      }))
+      // ...
+    } else {
+      // User is signed out
+      // ...
+      dispatch(isAuthActions.setIsAuth({
+        isAuth: false,
+        uid: "",
+        displayName: ""
+      }))
+    }
+
+  });
 
 
   return (
     <>
       {console.log('APP.JS RENDERED')}
-      <Model {...props} />
-      <NavBar {...props} />
+      <Model/>
+      <NavBar />
       <Routes>
-        <Route path="/" element={<Home {...props} />} />
-        <Route path="/createpost" element={<CreatePost {...props} />} />
-        <Route path="/login" element={<Login {...props} />} />
-        <Route path="/mypost" element={<MyPosts {...props} />} />
-        <Route path="/posts/:postId" element={<SinglePost {...props} />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/createpost" element={<CreatePost/>} />
+        <Route path="/posts/:postId" element={<SinglePost />} /> 
+        <Route path="/mypost" element={<MyPosts />} />
         <Route path="*" element={<h1 className='text-center mt-5'>404 page not found</h1>} />
       </Routes>
     </>

@@ -15,11 +15,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { modelActions } from "../store/modelSlice";
 //
 
-function Home({ isAuth }) {
+function Home() {
 
   //redux
   const dispatch = useDispatch()
   const model = useSelector((state) => state.model)
+  const authState = useSelector((state) => state.authState)
+
   //
 
   const [postLists, setPostList] = useState(null);
@@ -86,7 +88,7 @@ function Home({ isAuth }) {
       <Container>
         {postLists?.length > 0 &&
           <div className="mb-3 d-flex justify-content-end">
-            <DropDown dropdown={dropdown} setDropdown={setDropdown} isAuth={isAuth} />
+            <DropDown dropdown={dropdown} setDropdown={setDropdown} />
           </div>}
 
         {(postLists == null) &&
@@ -97,7 +99,7 @@ function Home({ isAuth }) {
           </>}
 
         {postLists != null && postLists?.length > 0 &&
-          <Cards postLists={postLists} deletePostClick={deletePostClick} isAuth={isAuth} />
+          <Cards postLists={postLists} deletePostClick={deletePostClick} isAuth={authState.isAuth} uid={authState.uid} />
         }
 
         {postLists?.length == 0 && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>No Posts available</h3>}

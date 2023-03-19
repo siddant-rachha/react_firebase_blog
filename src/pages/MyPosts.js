@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { modelActions } from "../store/modelSlice";
 
 
-function MyPosts({ isAuth }) {
+function MyPosts() {
 
     const [postLists, setPostList] = useState(null);
     const [dropdown, setDropdown] = useState("latest")
@@ -19,14 +19,14 @@ function MyPosts({ isAuth }) {
     const [deleteId, setDeleteId] = useState("")
     const dispatch = useDispatch();
     const model = useSelector((state) => state.model)
-
+    const authState = useSelector((state) => state.authState)
 
 
     const getPosts = async () => {
         try {
             const postsCollectionRef = dropdown == "latest" ?
-                query(collection(db, "posts"), where("author.id", "==", localStorage.authuid), orderBy("time", "desc")) :
-                query(collection(db, "posts"), where("author.id", "==", localStorage.authuid), orderBy("time"))
+                query(collection(db, "posts"), where("author.id", "==", authState.uid), orderBy("time", "desc")) :
+                query(collection(db, "posts"), where("author.id", "==", authState.uid), orderBy("time"))
             const data = await getDocs(postsCollectionRef);
             setPostList(data.docs.map((doc) => ({
                 ...doc.data(),
@@ -41,7 +41,6 @@ function MyPosts({ isAuth }) {
     };
 
     useEffect(() => {
-        if (localStorage.authuid == null) return;
 
         if (model.btnFunction == "delete_MyPost") {
             const deletePost = async () => {
@@ -64,8 +63,7 @@ function MyPosts({ isAuth }) {
     }, [model.pressed]);
 
     useEffect(() => {
-        if (localStorage.authuid == null) return;
-        getPosts();
+        if (authState.isAuth == true) getPosts();
 
     }, [dropdown]);
 
@@ -81,7 +79,7 @@ function MyPosts({ isAuth }) {
             <Container>
                 {postLists?.length > 0 &&
                     <div className="mb-3 d-flex justify-content-end">
-                        <DropDown dropdown={dropdown} setDropdown={setDropdown} isAuth={isAuth} />
+                        <DropDown dropdown={dropdown} setDropdown={setDropdown} />
                     </div>}
 
                 {(postLists == null) && localStorage.authuid &&
@@ -92,9 +90,9 @@ function MyPosts({ isAuth }) {
                     </>}
 
                 {postLists != null && postLists?.length > 0 &&
-                    <Cards postLists={postLists} deletePostClick={deletePostClick} isAuth={isAuth} />
+                    <Cards postLists={postLists} deletePostClick={deletePostClick} isAuth={authState.isAuth} uid={authState.uid} />
                 }
-                {localStorage.authuid == null && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>Login to see your posts</h3>}
+                {!(authState.isAuth==true) && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>Login to see your posts</h3>}
                 {postLists?.length == 0 && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>You have no posts. Create one.</h3>}
 
             </Container>

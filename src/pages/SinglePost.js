@@ -11,7 +11,7 @@ import { faArrowLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { modelActions } from "../store/modelSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-function SinglePost({ isAuth }) {
+function SinglePost() {
 
     const [post, setPost] = useState(null);
     const [deleteId, setDeleteId] = useState("")
@@ -23,6 +23,8 @@ function SinglePost({ isAuth }) {
 
     const dispatch = useDispatch();
     const model = useSelector((state) => state.model)
+    const authState = useSelector((state) => state.authState)
+
 
     const getSinglePost = async () => {
         const docRef = doc(db, "posts", postId);
@@ -85,7 +87,7 @@ function SinglePost({ isAuth }) {
                     <>
                         <Stack direction="horizontal">
                             <Button onClick={() => navigate(-1)} variant="outline-dark btn-sm" className="me-auto"><FontAwesomeIcon size="xs" icon={faArrowLeft} /></Button>
-                            {isAuth && post.author.id === localStorage.authuid && (
+                            {post.author.id === authState.uid && (
                                 <Button onClick={() => deletePostClick(postId)} variant="outline-danger btn-sm" className="ms-auto"><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>)}
                         </Stack>
                         <hr></hr>

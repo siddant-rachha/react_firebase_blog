@@ -10,17 +10,20 @@ import { auth } from "../firebase-config";
 import { signOut } from "firebase/auth";
 
 import { Container, Button, Nav, Navbar } from 'react-bootstrap';
+import { isAuthActions } from '../store/isAuthSlice';
 
 
 
-function NavBar({ isAuth, setIsAuth }) {
+function NavBar() {
 
     const navigate = useNavigate();
     const location = useLocation();
 
     //redux
     const dispatch = useDispatch()
-    const model = useSelector((state)=>state.model)
+    const model = useSelector((state) => state.model)
+    const authState = useSelector((state) => state.authState)
+
     //
 
     const logoutClicked = () => {
@@ -31,14 +34,14 @@ function NavBar({ isAuth, setIsAuth }) {
         navigate('/login');
     };
 
-    useEffect(()=>{
-        if(model.btnFunction == 'logout'){
-            console.log("logout runned")
+    useEffect(() => {
+        if (model.btnFunction == 'logout') {
             signOut(auth).then(() => {
-                localStorage.clear();
-                setIsAuth(false);
+
+                dispatch(isAuthActions.setIsAuth({uid:"", displayName: "", isAuth: false}))
                 navigate('/login');
                 dispatch(modelActions.setModel({ text: "", display: false, btnFunction: "" }))
+
             })
         }
     }, [model.pressed])
@@ -63,10 +66,10 @@ function NavBar({ isAuth, setIsAuth }) {
                         <NavLink className="ps-sm-3 pe-sm-3 pe-2 ps-2" to='/mypost'>MyPost</NavLink>
                     </Nav>
                     <Nav className="ms-auto flex-wrap justify-content-end flex-column">
-                        {!isAuth ? <Button onClick={login} variant="outline-light">Login</Button> :
-                            <><Button onClick={logoutClicked} variant="outline-danger">Logout</Button></>}
+                        {authState.isAuth == true ? <Button onClick={logoutClicked} variant="outline-danger">Logout</Button> :
+                            <Button onClick={login} variant="outline-light">Login</Button>}
                     </Nav>
-                    {isAuth && <p style={{ fontSize: "x-small" }} className='position-absolute start-0 bottom-0 mb-0 text-light text-muted'>@ {localStorage?.name}</p>}
+                    {authState.isAuth == true && <p style={{ fontSize: "x-small" }} className='position-absolute start-0 bottom-0 mb-0 text-light text-muted'>@ {authState.displayName}</p>}
                 </Container>
             </Navbar>
         </>

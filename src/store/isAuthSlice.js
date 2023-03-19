@@ -1,15 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  isAuth: false
+  isAuth: false,
+  uid: ""
 }
 
 export const isAuthSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setAuth: (state, action) => {
-
+    setIsAuth: (state, action) => {
+        state = action.payload
     }
   },
 })
@@ -17,4 +18,4 @@ export const isAuthSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const isAuthActions =  isAuthSlice.actions
 
-export default isAuthSlice.reducer
+export const isAuthReducers =  isAuthSlice.reducer

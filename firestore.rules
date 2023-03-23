@@ -6,19 +6,27 @@ service cloud.firestore {
       // permission to read for everyone
       allow read: if true
       
+      
       // permission to create only to logged in users and only the when the author is saving its id as correct auth uid
       allow create: if request.auth != null &&
-      request.resource.data.author.id == request.auth.uid &&
+      request.resource.data.author.id == request.auth.uid 
       
-      //prevent creation of premium = true by user
-      request.resource.data.premium != true;
+      //prevent creation of premium field
+      && (!request.resource.data.keys().hasAny(['premium']));
       
-      //permission to update, delete only to logged in users and only if he is author who created it
-      allow update, delete : if request.auth != null &&
-      get(/databases/$(database)/documents/posts/$(post)).data.author.id == request.auth.uid &&
+      //permission to update only to logged in users and only if he is author who created it
+      allow update : if request.auth != null &&
+      get(/databases/$(database)/documents/posts/$(post)).data.author.id == request.auth.uid 
       
-      //prevent update, delete of premium = true by user
-      request.resource.data.premium != true;
+      //prevent updation of premium field
+      && (!request.resource.data.diff(resource.data).affectedKeys()
+        .hasAny(['premium']));
+      
+      //permission to update only to logged in users and only if he is author who created it
+      allow delete : if request.auth != null &&
+      get(/databases/$(database)/documents/posts/$(post)).data.author.id == request.auth.uid 
+      
+      
 
     }
   }

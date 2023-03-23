@@ -15,7 +15,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { modelActions } from "../store/modelSlice";
 //
 
+
+
 function CreatePost() {
+
+  const navigate = useNavigate()
 
   //redux
   const dispatch = useDispatch();
@@ -28,7 +32,6 @@ function CreatePost() {
   const [checkbox, setCheckbox] = useState(false);
 
   const postsCollectionRef = collection(db, "posts");
-  let navigate = useNavigate();
 
   const createPost = async (e) => {
     e.preventDefault();
@@ -57,6 +60,9 @@ function CreatePost() {
 
   const payPost = (e) => {
     e.preventDefault();
+    if (title.trim() == "" || postText.trim() == "") { alert("title or post, empty"); return; }
+    setbtndisabled(true);
+    navigate("/payment");
   }
 
   const toggleCheckbox = (e) => {

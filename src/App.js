@@ -12,6 +12,7 @@ import CreatePost from "./pages/CreatePost";
 import Login from "./pages/Login";
 import SinglePost from "./pages/SinglePost";
 import MyPosts from './pages/MyPosts';
+import Payment from './pages/Payment';
 
 //packages imports
 import { Routes, Route } from "react-router-dom";
@@ -20,6 +21,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 //redux store imports
 import { useDispatch } from 'react-redux';
 import { isAuthActions } from './store/isAuthSlice'
+import Completion from './pages/Completion';
 
 const auth = getAuth();
 
@@ -61,6 +63,9 @@ function App() {
         <Route path="/createpost" element={<CreatePost />} />
         <Route path="/posts/:postId" element={<SinglePost />} />
         <Route path="/mypost" element={<MyPosts />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/completion" element={<Completion />} />
+        
         <Route path="*" element={<h1 className='text-center mt-5'>404 page not found</h1>} />
       </Routes>
     </>

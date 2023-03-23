@@ -1,7 +1,7 @@
 
 //fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan, faStar } from '@fortawesome/free-solid-svg-icons'
 
 //bootstrap
 import { Card, Col, Row } from 'react-bootstrap';
@@ -38,8 +38,13 @@ function Cards({ postLists, deletePostClick, isAuth, uid }) {
                                         <Link to={`/posts/${post.id}`}>
                                             Read More
                                         </Link>
+                                        {post.premium == true && <span className="ms-auto p-3 text-warning">
+                                            <FontAwesomeIcon size="xs" icon={faStar} />
+                                            <FontAwesomeIcon size="xs" icon={faStar} />
+                                            <FontAwesomeIcon size="xs" icon={faStar} />
+                                        </span>}
                                         {isAuth && post.author.id === uid && (
-                                            <Button onClick={() => deletePostClick(post.id)} variant="outline-danger" className="ms-auto"><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>
+                                            <Button onClick={() => deletePostClick(post.id)} variant="outline-danger" className={post.premium ? "":"ms-auto"}><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>
                                         )}
                                     </Stack>
                                 </Card.Body>

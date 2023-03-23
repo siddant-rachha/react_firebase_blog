@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 //firebase
-import { getDocs, collection, deleteDoc, doc, query, orderBy } from "firebase/firestore";
+import { getDocs, collection, deleteDoc, doc, query, orderBy, where } from "firebase/firestore";
 import { db } from "../firebase-config";
 
 //component
@@ -31,8 +31,16 @@ function Home() {
 
   const getPosts = async () => {
     try {
-      const postsCollectionRef = dropdown == "latest" ? query(collection(db, "posts"), orderBy("time", "desc")) :
-        query(collection(db, "posts"), orderBy("time"))
+      let postsCollectionRef;
+      if (dropdown == "latest") {
+        postsCollectionRef = query(collection(db, "posts"), orderBy("time", "desc"))
+      }
+      if (dropdown == "oldest") {
+        postsCollectionRef = query(collection(db, "posts"), orderBy("time"))
+      }
+      if (dropdown == "premium") {
+        postsCollectionRef = query(collection(db, "posts"), where("premium", "==", true), orderBy("time", "desc"))
+      }
       const data = await getDocs(postsCollectionRef);
       setPostList(data.docs.map((doc) => ({
         ...doc.data(), id: doc.id,
@@ -45,7 +53,7 @@ function Home() {
   };
 
   useEffect(() => {
-    
+
     if (model.btnFunction == 'delete_Home') {
       const deletePost = async () => {
         try {
@@ -69,7 +77,7 @@ function Home() {
   }, [model.pressed]);
 
   useEffect(() => {
-    
+
     getPosts()
   }, [dropdown])
 

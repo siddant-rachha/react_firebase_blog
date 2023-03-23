@@ -30,9 +30,21 @@ function MyPosts() {
 
     const getPosts = async () => {
         try {
-            const postsCollectionRef = dropdown == "latest" ?
-                query(collection(db, "posts"), where("author.id", "==", authState.uid), orderBy("time", "desc")) :
-                query(collection(db, "posts"), where("author.id", "==", authState.uid), orderBy("time"))
+            let postsCollectionRef;
+            if (dropdown == "latest") {
+                postsCollectionRef = query(collection(db, "posts"), where("author.id", "==", authState.uid), orderBy("time", "desc"))
+            }
+            if (dropdown == "oldest") {
+                postsCollectionRef = query(collection(db, "posts"), where("author.id", "==", authState.uid), orderBy("time"))
+            }
+            if (dropdown == "premium") {
+                postsCollectionRef = query(collection(db, "posts"), where("author.id", "==", authState.uid), where("premium", "==", true), orderBy("time", "desc"))
+            }
+
+            // let postsCollectionRef;
+            // postsCollectionRef = (dropdown == "latest") ? query(collection(db, "posts"), where("author.id", "==", authState.uid), orderBy("time", "desc")):null
+            // postsCollectionRef = (dropdown == "oldest") ? query(collection(db, "posts"), where("author.id", "==", authState.uid), orderBy("time")):null
+            // // postsCollectionRef = (dropdown == "premium") && query(collection(db, "posts"), where("premium", "==", true), orderBy("time", "desc"))
             const data = await getDocs(postsCollectionRef);
             setPostList(data.docs.map((doc) => ({
                 ...doc.data(),
@@ -42,6 +54,7 @@ function MyPosts() {
 
         } catch (error) {
             alert(error);
+            console.log(error)
         }
     };
 
@@ -97,7 +110,7 @@ function MyPosts() {
                 {postLists != null && postLists?.length > 0 &&
                     <Cards postLists={postLists} deletePostClick={deletePostClick} isAuth={authState.isAuth} uid={authState.uid} />
                 }
-                {!(authState.isAuth==true) && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>Login to see your posts</h3>}
+                {!(authState.isAuth == true) && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>Login to see your posts</h3>}
                 {postLists?.length == 0 && <h3 className="translate-middle" style={{ position: "absolute", top: "40%", left: "50%" }}>You have no posts. Create one.</h3>}
 
             </Container>

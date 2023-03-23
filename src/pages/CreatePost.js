@@ -25,6 +25,7 @@ function CreatePost() {
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");
   const [btndisabled, setbtndisabled] = useState(false);
+  const [checkbox, setCheckbox] = useState(false);
 
   const postsCollectionRef = collection(db, "posts");
   let navigate = useNavigate();
@@ -44,8 +45,8 @@ function CreatePost() {
       dispatch(modelActions.setModel({ text: "Post Created", display: true }))
 
     }
-    catch (e) {
-      alert(e)
+    catch (error) {
+      alert(error)
     }
     finally {
       setbtndisabled(false);
@@ -54,24 +55,48 @@ function CreatePost() {
 
   };
 
+  const payPost = (e) => {
+    e.preventDefault();
+  }
+
+  const toggleCheckbox = (e) => {
+    setCheckbox(e.target.checked)
+  }
+
   return (
     <>
       {console.log('CREATE POST.JS RENDERED')}
       <Container className="mt-5">
-        {!(authState.isAuth==true) && <h1 className="h3 mb-3">Login to create post</h1>}
+        {!(authState.isAuth == true) && <h1 className="h3 mb-3">Login to create post</h1>}
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Title</Form.Label>
-            <Form.Control disabled={(authState.isAuth==true) ? false : true} onChange={(event) => setTitle(event.target.value)} type="text" placeholder="Enter title" />
+            <Form.Control disabled={(authState.isAuth == true) ? false : true} onChange={(event) => setTitle(event.target.value)} type="text" placeholder="Enter title" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Post Text</Form.Label>
-            <Form.Control disabled={(authState.isAuth==true) ? false : true} style={{ height: "40vh" }} onChange={(event) => setPostText(event.target.value)} as="textarea" placeholder="Write post here..." />
+            <Form.Control disabled={(authState.isAuth == true) ? false : true} style={{ height: "40vh" }} onChange={(event) => setPostText(event.target.value)} as="textarea" placeholder="Write post here..." />
           </Form.Group>
-          <Button disabled={(authState.isAuth==true) && !btndisabled ? false : true} onClick={(e) => createPost(e)} variant="primary" type="submit">
+          <Form.Check
+            onClick={toggleCheckbox}
+            type="switch"
+            id="switch"
+            label={checkbox?"Premium Post":"Normal Post"}
+            className="mb-3 danger"
+          />
+
+
+          {checkbox ?
+            <Button disabled={(authState.isAuth == true) && !btndisabled ? false : true} onClick={(e) => payPost(e)} variant="primary" type="submit">
+              Pay 50Paise
+            </Button>:
+          <Button disabled={(authState.isAuth == true) && !btndisabled ? false : true} onClick={(e) => createPost(e)} variant="primary" type="submit">
             Submit
           </Button>
+          }
+
+
         </Form>
         <div className="mb-3"></div>
       </Container>

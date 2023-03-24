@@ -29,8 +29,8 @@ export default function CheckoutForm() {
             elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
-                return_url: `${window.location.origin}/completion`,
-            },
+                return_url: `${window.location.origin}/payment/completion`,
+            }
         });
 
         // This point will only be reached if there is an immediate error when
@@ -57,14 +57,17 @@ export default function CheckoutForm() {
                 setMessage(null)
             }, 3000);
         }
-        return ()=>{
+        return () => {
             clearTimeout(timeout)
         }
     }, [message])
 
     return (
-        <form id="payment-form" onSubmit={handleSubmit}>
-            {/* <LinkAuthenticationElement id="link-authentication-element"
+        <>
+            <h3 className='mt-3 text-center'>Pay &#8377; 0.5 INR</h3>
+
+            <form id="payment-form" onSubmit={handleSubmit}>
+                {/* <LinkAuthenticationElement id="link-authentication-element"
           // Access the email value like so:
           // onChange={(event) => {
           //  setEmail(event.value.email);
@@ -73,14 +76,15 @@ export default function CheckoutForm() {
           // Prefill the email field like so:
           options={{defaultValues: {email: 'siddhant.rachha@gmail.com'}}}
           /> */}
-            <PaymentElement id="payment-element" />
-            <Button onClick={handleSubmit} className="mt-3 mb-3" disabled={isLoading || !stripe || !elements} id="submit">
-                <span id="button-text">
-                    {isLoading ? <div className="spinner" id="spinner">Loading...</div> : "Pay now"}
-                </span>
-            </Button>
-            {/* Show any error or success messages */}
-            {message && <div id="payment-message">{message}</div>}
-        </form>
+                <PaymentElement id="payment-element" />
+                <Button onClick={handleSubmit} className="mt-3 mb-3" disabled={isLoading || !stripe || !elements} id="submit">
+                    <span id="button-text">
+                        {isLoading ? <div className="spinner" id="spinner">Loading...</div> : "Pay now"}
+                    </span>
+                </Button>
+                {/* Show any error or success messages */}
+                {message && <div id="payment-message">{message}</div>}
+            </form>
+        </>
     )
 }

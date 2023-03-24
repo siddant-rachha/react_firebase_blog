@@ -1,5 +1,5 @@
 //react
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //firebase
 import { addDoc, collection } from "firebase/firestore";
@@ -15,19 +15,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { modelActions } from "../store/modelSlice";
 //
 
+import { postActions } from "../store/postSlice";
 
 
 function CreatePost() {
 
   const navigate = useNavigate()
 
+
   //redux
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.authState)
+  const post = useSelector((state) => state.post)
   //
 
-  const [title, setTitle] = useState("");
-  const [postText, setPostText] = useState("");
   const [btndisabled, setbtndisabled] = useState(false);
   const [checkbox, setCheckbox] = useState(false);
 
@@ -35,13 +36,14 @@ function CreatePost() {
 
   const createPost = async (e) => {
     e.preventDefault();
-    if (title.trim() == "" || postText.trim() == "") { alert("title or post, empty"); return; }
+    if (post.title.trim() == "" || post.postText.trim() == "") { alert("title or post, empty"); return; }
     setbtndisabled(true);
+    debugger
     try {
       await addDoc(postsCollectionRef, {
-        title,
-        postText,
-        author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
+        title: post.title,
+        postText: post.postText,
+        author: { name: authState.displayName, id: authState.uid },
         time: serverTimestamp()
       });
       navigate("/");
@@ -60,7 +62,8 @@ function CreatePost() {
 
   const payPost = (e) => {
     e.preventDefault();
-    if (title.trim() == "" || postText.trim() == "") { alert("title or post, empty"); return; }
+    console.log(auth.currentUser.displayName)
+    if (post.title.trim() == "" || post.postText.trim() == "") { alert("title or post, empty"); return; }
     setbtndisabled(true);
     navigate("/payment");
   }
@@ -68,6 +71,7 @@ function CreatePost() {
   const toggleCheckbox = (e) => {
     setCheckbox(e.target.checked)
   }
+
 
   return (
     <>
@@ -77,29 +81,29 @@ function CreatePost() {
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Title</Form.Label>
-            <Form.Control disabled={(authState.isAuth == true) ? false : true} onChange={(event) => setTitle(event.target.value)} type="text" placeholder="Enter title" />
+            <Form.Control disabled={(authState.isAuth == true) ? false : true} onChange={(event) => dispatch(postActions.setTitle({ title: event.target.value }))} type="text" placeholder="Enter title" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Post Text</Form.Label>
-            <Form.Control disabled={(authState.isAuth == true) ? false : true} style={{ height: "40vh" }} onChange={(event) => setPostText(event.target.value)} as="textarea" placeholder="Write post here..." />
+            <Form.Control disabled={(authState.isAuth == true) ? false : true} style={{ height: "40vh" }} onChange={(event) => dispatch(postActions.setPostText({ postText: event.target.value }))} as="textarea" placeholder="Write post here..." />
           </Form.Group>
           <Form.Check
             onClick={toggleCheckbox}
             type="switch"
             id="switch"
-            label={checkbox?"Premium Post":"Normal Post"}
+            label={checkbox ? "Premium Post" : "Normal Post"}
             className="mb-3 danger"
           />
 
 
           {checkbox ?
             <Button disabled={(authState.isAuth == true) && !btndisabled ? false : true} onClick={(e) => payPost(e)} variant="primary" type="submit">
-              Pay 50Paise
-            </Button>:
-          <Button disabled={(authState.isAuth == true) && !btndisabled ? false : true} onClick={(e) => createPost(e)} variant="primary" type="submit">
-            Submit
-          </Button>
+              Pay
+            </Button> :
+            <Button disabled={(authState.isAuth == true) && !btndisabled ? false : true} onClick={(e) => createPost(e)} variant="primary" type="submit">
+              Submit
+            </Button>
           }
 
 

@@ -22,6 +22,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from 'react-redux';
 import { isAuthActions } from './store/isAuthSlice'
 import Completion from './pages/Completion';
+import { postActions } from './store/postSlice';
 
 const auth = getAuth();
 
@@ -40,6 +41,8 @@ function App() {
         uid: user.uid,
         displayName: user.displayName
       }))
+      dispatch(postActions.setAuthor({ name: user.displayName, id: user.uid }))
+
     } else {
       // User is signed out
       dispatch(isAuthActions.setIsAuth({
@@ -63,9 +66,9 @@ function App() {
         <Route path="/createpost" element={<CreatePost />} />
         <Route path="/posts/:postId" element={<SinglePost />} />
         <Route path="/mypost" element={<MyPosts />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/completion" element={<Completion />} />
-        
+        <Route path="/payment/*" element={<Payment />} />
+        {/* <Route path="/completion" element={<Completion />} /> */}
+
         <Route path="*" element={<h1 className='text-center mt-5'>404 page not found</h1>} />
       </Routes>
     </>

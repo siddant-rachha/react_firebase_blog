@@ -66,7 +66,7 @@ export default function CheckoutForm() {
 
     return (
         <>
-            <h3 className='mt-3 text-center'>Pay &#8377;1 </h3>
+            <h3 className='mt-3 text-center'>Pay &#8377;0.5 </h3>
 
             <form id="payment-form" onSubmit={handleSubmit}>
                 {/* <LinkAuthenticationElement id="link-authentication-element"

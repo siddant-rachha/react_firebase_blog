@@ -98,7 +98,7 @@ function CreatePost() {
 
           {checkbox ?
             <Button className="mt-5" disabled={(authState.isAuth == true) && !btndisabled ? false : true} onClick={(e) => payPost(e)} variant="primary" type="submit">
-              Pay
+              Pay &#8377;0.5
             </Button> :
             <Button className="mt-5" disabled={(authState.isAuth == true) && !btndisabled ? false : true} onClick={(e) => createPost(e)} variant="primary" type="submit">
               Submit

@@ -50,7 +50,6 @@ function Payment() {
         if (stripePromise == null) return
         if (post.title == "") return
 
-        console.log(stripePromise)
         console.log("payment intent creeated")
         fetch(`${process.env.REACT_APP_BASE_SERVER}/create-payment-intent`, {
             method: "POST",

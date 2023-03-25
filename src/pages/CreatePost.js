@@ -81,12 +81,12 @@ function CreatePost() {
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Title</Form.Label>
-            <Form.Control disabled={(authState.isAuth == true) ? false : true} onChange={(event) => dispatch(postActions.setTitle({ title: event.target.value }))} type="text" placeholder="Enter title" />
+            <Form.Control value={post.title} disabled={(authState.isAuth == true) ? false : true} onChange={(event) => dispatch(postActions.setTitle({ title: event.target.value }))} type="text" placeholder="Enter title" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Post Text</Form.Label>
-            <Form.Control disabled={(authState.isAuth == true) ? false : true} style={{ height: "40vh" }} onChange={(event) => dispatch(postActions.setPostText({ postText: event.target.value }))} as="textarea" placeholder="Write post here..." />
+            <Form.Control value={post.postText} disabled={(authState.isAuth == true) ? false : true} style={{ height: "40vh" }} onChange={(event) => dispatch(postActions.setPostText({ postText: event.target.value }))} as="textarea" placeholder="Write post here..." />
           </Form.Group>
           <Form.Check
             onClick={toggleCheckbox}

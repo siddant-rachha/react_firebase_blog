@@ -29,6 +29,7 @@ function MyPosts() {
 
 
     const getPosts = async () => {
+        debugger
         try {
             let postsCollectionRef;
             if (dropdown == "latest") {
@@ -81,9 +82,10 @@ function MyPosts() {
     }, [model.pressed]);
 
     useEffect(() => {
+        debugger
         if (authState.isAuth == true) getPosts();
 
-    }, [dropdown]);
+    }, [dropdown, authState.isAuth]);
 
     const deletePostClick = (id) => {
         setDeleteId(id);

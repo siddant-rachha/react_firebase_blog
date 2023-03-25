@@ -23,6 +23,10 @@ function Cards({ postLists, deletePostClick, isAuth, uid }) {
                             <Card bg='light'>
                                 <Card.Header className="h5">
                                     {post.title.length > 100 ? `${post.title.slice(0, 75)}...` : `${post.title}`}
+                                    {post.premium == true && <span className="me-1 text-warning">
+                                        {/* <FontAwesomeIcon size="xs" icon={faStar} /> */}
+                                        <span className='ms-1' style={{fontSize:"1rem", whiteSpace: "nowrap"}}><em><small>(<FontAwesomeIcon size="xs" icon={faStar} />premium)</small></em></span>
+                                    </span>}
                                 </Card.Header>
                                 <Card.Body>
                                     <div className="d-flex">
@@ -38,13 +42,8 @@ function Cards({ postLists, deletePostClick, isAuth, uid }) {
                                         <Link to={`/posts/${post.id}`}>
                                             Read More
                                         </Link>
-                                        {post.premium == true && <span className="ms-auto p-3 text-warning">
-                                            <FontAwesomeIcon size="xs" icon={faStar} />
-                                            <FontAwesomeIcon size="xs" icon={faStar} />
-                                            <FontAwesomeIcon size="xs" icon={faStar} />
-                                        </span>}
                                         {isAuth && post.author.id === uid && (
-                                            <Button onClick={() => deletePostClick(post.id)} variant="outline-danger" className={post.premium ? "":"ms-auto"}><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>
+                                            <Button onClick={() => deletePostClick(post.id)} variant="outline-danger" className={"ms-auto"}><FontAwesomeIcon size="xs" icon={faTrashCan} /></Button>
                                         )}
                                     </Stack>
                                 </Card.Body>

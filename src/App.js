@@ -39,7 +39,8 @@ function App() {
       dispatch(isAuthActions.setIsAuth({
         isAuth: true,
         uid: user.uid,
-        displayName: user.displayName
+        displayName: user.displayName,
+        email: user.email
       }))
       dispatch(postActions.setAuthor({ name: user.displayName, id: user.uid }))
 

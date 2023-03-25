@@ -62,7 +62,6 @@ function CreatePost() {
 
   const payPost = (e) => {
     e.preventDefault();
-    console.log(auth.currentUser.displayName)
     if (post.title.trim() == "" || post.postText.trim() == "") { alert("title or post, empty"); return; }
     setbtndisabled(true);
     navigate("/payment");

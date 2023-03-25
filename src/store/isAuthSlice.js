@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   isAuth: false,
   uid: "",
-  displayName: ""
+  displayName: "",
+  email:""
 }
 
 export const isAuthSlice = createSlice({
@@ -14,6 +15,7 @@ export const isAuthSlice = createSlice({
         state.displayName = action.payload.displayName
         state.uid = action.payload.uid
         state.isAuth = action.payload.isAuth
+        state.email = action.payload.email
     }
   },
 })

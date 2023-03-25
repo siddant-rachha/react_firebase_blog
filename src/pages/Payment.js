@@ -6,6 +6,7 @@ import { Container } from 'react-bootstrap';
 import Completion from './Completion';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { async } from '@firebase/util';
 
 function Payment() {
 
@@ -15,6 +16,7 @@ function Payment() {
     const [clientSecret, setClientSecret] = useState('');
 
     const post = useSelector((state) => state.post)
+    const authState = useSelector((state) => state.authState)
 
     const { pathname } = useLocation()
 
@@ -29,8 +31,8 @@ function Payment() {
         });
         console.log(pathname)
 
-       //get clientsecret to send to element
-       //checkout and completion needs to be inside element 
+        //get clientsecret to send to element
+        //checkout and completion needs to be inside element 
         if (pathname == "/payment/completion") {
 
             // Retrieve the "payment_intent_client_secret" query parameter appended to
@@ -50,19 +52,32 @@ function Payment() {
         if (stripePromise == null) return
         if (post.title == "") return
 
-        console.log("payment intent creeated")
-        fetch(`${process.env.REACT_APP_BASE_SERVER}/create-payment-intent`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...post }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setClientSecret(data.clientSecret)
-                console.log(data)
-                console.log(data.clientSecret)
+        const createPaymentIntent = async () => {
+            try {
+            } catch (error) {
+                console.log(error)
             }
-            );
+            try {
+                console.log("payment intent creeated")
+                fetch(`${process.env.REACT_APP_BASE_SERVER}/create-payment-intent`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ ...post, email:authState.email}),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        setClientSecret(data.clientSecret)
+                        console.log(data)
+                        console.log(data.clientSecret)
+                    });
+
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        createPaymentIntent();
+
     }, [stripePromise]);
 
 

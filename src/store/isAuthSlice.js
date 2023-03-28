@@ -12,10 +12,10 @@ export const isAuthSlice = createSlice({
   initialState,
   reducers: {
     setIsAuth: (state, action) => {
-        state.displayName = action.payload.displayName
-        state.uid = action.payload.uid
-        state.isAuth = action.payload.isAuth
-        state.email = action.payload.email
+      if (action.payload.displayName!=undefined) state.displayName = action.payload.displayName
+      if (action.payload.uid!=undefined)  state.uid = action.payload.uid
+      if (action.payload.isAuth!=undefined)  state.isAuth = action.payload.isAuth
+      if (action.payload.email!=undefined)  state.email = action.payload.email
     }
   },
 })
